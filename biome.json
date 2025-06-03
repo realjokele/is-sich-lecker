@@ -41,7 +41,7 @@
       "correctness": {
         "recommended": true,
         "noUnusedImports": "info",
-        "noUnusedVariables": "warn",
+        "noUnusedVariables": "off",
         "noUnusedLabels": "error",
         "noUnusedFunctionParameters": "info",
         "noChildrenProp": "off"

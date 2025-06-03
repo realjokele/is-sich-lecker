@@ -1,4 +1,4 @@
-import { HeadContent, Link, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
+import { useRouter, HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
@@ -10,6 +10,9 @@ import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary.js'
 import { NotFound } from '~/components/NotFound.js'
 import appCss from '~/styles/tailwind.css?url'
 import { seo } from '~/utils/seo.js'
+import { Link } from '~/components/ui/link'
+import { authClient } from '~/lib/auth-client'
+import { Button } from '~/components/ui/button'
 
 const queryClient = new QueryClient()
 
@@ -100,6 +103,18 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const router = useRouter()
+
+  async function handleLogout() {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          queryClient.resetQueries()
+          router.navigate({ to: '/login' })
+        },
+      },
+    })
+  }
   return (
     <html lang="en">
       <head>
@@ -124,17 +139,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           >
             Dashboard
           </Link>
-          {}
-          <Link
-            to="/posts"
-            activeProps={{
-              className: 'font-bold',
-            }}
-          >
-            Posts
-          </Link>
           <div className="ml-auto">
-            <Link to="/login">Login</Link>
+            <Button onClick={async () => await handleLogout()}>Sign Out</Button>
           </div>
         </div>
         <hr />

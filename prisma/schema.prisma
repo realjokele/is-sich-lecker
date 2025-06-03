@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,6 +6,174 @@ datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
 }
+
+model Recipe {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title              String
+  description        String?
+  ingredients        RecipeIngredient[]
+  ingredientSections IngredientSection[]
+  steps              RecipeStep[]
+  servings           Int?
+  level              Int?
+
+  preparationTime Int?
+  cookingTime     Int?
+
+  userDataId String
+  userData   UserData @relation(fields: [userDataId], references: [id], onDelete: Cascade)
+
+  ratings Rating[] @relation("RecipeRatings")
+
+  categoryId String?
+  categories Category[] @relation("CategoryRecipes")
+
+  recipeLists RecipeList[] @relation("RecipeToList")
+
+  @@index([userDataId], name: "userDataId-recipe")
+}
+
+model IngredientBase {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  name        String
+  description String?
+  recipes     RecipeIngredient[]
+
+  userDataId String
+  userData   UserData @relation(fields: [userDataId], references: [id], onDelete: Cascade)
+
+  unitId String? // Reference to the Unit model
+  unit   Unit?   @relation(fields: [unitId], references: [id])
+
+  @@index([userDataId], name: "userDataId-ingredients")
+}
+
+// An ingredient can be part of several recipes, that's why we need RecipeIngredient to create
+// the relation between ingredient and recipe.
+model RecipeIngredient {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  recipeId            String
+  recipe              Recipe             @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  ingredientId        String
+  ingredient          IngredientBase     @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+  ingredientSectionId String?
+  ingredientSection   IngredientSection? @relation(fields: [ingredientSectionId], references: [id], onDelete: SetNull)
+  order               Int // For manual ordering within an ingredient section
+
+  @@index([recipeId], name: "recipeId-recipeIngredients")
+  @@index([ingredientId], name: "ingredientId-recipeIngredients")
+  @@index([ingredientSectionId], name: "ingredientSectionId-recipeIngredients")
+}
+
+model Unit {
+  id          String       @id @default(cuid())
+  name        String       @unique // e.g., "cup", "gram", "liter"
+  conversion  Float // Conversion factor to a base unit (e.g., 1 cup = 240 ml)
+  baseUnit    String // The base unit for conversion (e.g., "ml" for volume, "g" for weight)
+  ingredients IngredientBase[]
+}
+
+enum IngredientSectionType {
+  DEFAULT
+  CUSTOM
+}
+
+model IngredientSection {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
+  description String?
+  order       Int // For manual ordering of sections
+  type        IngredientSectionType @default(CUSTOM)
+  recipeId    String
+  recipe      Recipe             @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  ingredients RecipeIngredient[]
+
+  @@index([recipeId], name: "recipeId-ingredientSections")
+}
+
+model RecipeStep {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  recipeId String
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  step     String
+  order    Int
+
+  @@index([recipeId], name: "recipeId-recipeSteps")
+}
+
+model Category {
+  id      String   @id @default(cuid())
+  name    String   @unique
+  recipes Recipe[] @relation("CategoryRecipes")
+}
+
+model Rating {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  value      Int // e.g., 1 to 5 stars
+  userDataId String
+  recipeId   String
+
+  userData UserData @relation("UserRatings", fields: [userDataId], references: [id], onDelete: Cascade)
+  recipe   Recipe   @relation("RecipeRatings", fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@unique([userDataId, recipeId]) // A user can only rate a recipe once
+}
+
+model RecipeList {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
+  description String?
+
+  userDataId String
+  userData   UserData @relation(fields: [userDataId], references: [id], onDelete: Cascade)
+
+  recipes Recipe[] @relation("RecipeToList")
+
+  @@unique([userDataId, name], name: "userDataList") // Ensure list names are unique per user
+  @@index([userDataId], name: "userDataId-recipeList")
+}
+
+model UserData {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Program data relations
+  recipes     Recipe[]
+  ingredients IngredientBase[]
+  ratings     Rating[] @relation("UserRatings")
+  recipeLists RecipeList[]
+
+  @@index([userId], name: "userId-userData")
+}
+
+// ///////////////////////////////////////
+// Bettter Auth
+// ///////////////////////////////////////
 
 model User {
   id              String    @id
@@ -20,6 +187,10 @@ model User {
   displayUsername String?
   sessions        Session[]
   accounts        Account[]
+
+  // Program data relations
+  // This is the only relation which has to be added, when the better auth schema has to be updated.
+  userData        UserData?
 
   @@unique([email])
   @@unique([username])

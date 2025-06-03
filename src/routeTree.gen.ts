@@ -21,9 +21,7 @@ import { Route as AuthResetPasswordRouteRouteImport } from './routes/_auth/reset
 import { Route as AuthPasswordChangedRouteRouteImport } from './routes/_auth/password-changed.route'
 import { Route as AuthLoginRouteRouteImport } from './routes/_auth/login.route'
 import { Route as AuthForgotPasswordRouteRouteImport } from './routes/_auth/forgot-password.route'
-import { Route as AppPostsRouteRouteImport } from './routes/_app/posts.route'
 import { Route as AppDashboardRouteRouteImport } from './routes/_app/dashboard.route'
-import { Route as AppPostsIndexRouteImport } from './routes/_app/posts.index'
 
 // Create/Update Routes
 
@@ -74,22 +72,10 @@ const AuthForgotPasswordRouteRoute = AuthForgotPasswordRouteRouteImport.update({
   getParentRoute: () => AuthRoute,
 } as any)
 
-const AppPostsRouteRoute = AppPostsRouteRouteImport.update({
-  id: '/posts',
-  path: '/posts',
-  getParentRoute: () => AppRoute,
-} as any)
-
 const AppDashboardRouteRoute = AppDashboardRouteRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AppRoute,
-} as any)
-
-const AppPostsIndexRoute = AppPostsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AppPostsRouteRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -122,13 +108,6 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AppDashboardRouteRouteImport
-      parentRoute: typeof AppRouteImport
-    }
-    '/_app/posts': {
-      id: '/_app/posts'
-      path: '/posts'
-      fullPath: '/posts'
-      preLoaderRoute: typeof AppPostsRouteRouteImport
       parentRoute: typeof AppRouteImport
     }
     '/_auth/forgot-password': {
@@ -165,13 +144,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/signup'
       preLoaderRoute: typeof AuthSignupRouteRouteImport
       parentRoute: typeof AuthRouteImport
-    }
-    '/_app/posts/': {
-      id: '/_app/posts/'
-      path: '/'
-      fullPath: '/posts/'
-      preLoaderRoute: typeof AppPostsIndexRouteImport
-      parentRoute: typeof AppPostsRouteRouteImport
     }
   }
 }
@@ -212,15 +184,6 @@ declare module './routes/_app/dashboard.route' {
     FileRoutesByPath['/_app/dashboard']['id'],
     FileRoutesByPath['/_app/dashboard']['path'],
     FileRoutesByPath['/_app/dashboard']['fullPath']
-  >
-}
-declare module './routes/_app/posts.route' {
-  const createFileRoute: CreateFileRoute<
-    '/_app/posts',
-    FileRoutesByPath['/_app/posts']['parentRoute'],
-    FileRoutesByPath['/_app/posts']['id'],
-    FileRoutesByPath['/_app/posts']['path'],
-    FileRoutesByPath['/_app/posts']['fullPath']
   >
 }
 declare module './routes/_auth/forgot-password.route' {
@@ -268,38 +231,15 @@ declare module './routes/_auth/signup.route' {
     FileRoutesByPath['/_auth/signup']['fullPath']
   >
 }
-declare module './routes/_app/posts.index' {
-  const createFileRoute: CreateFileRoute<
-    '/_app/posts/',
-    FileRoutesByPath['/_app/posts/']['parentRoute'],
-    FileRoutesByPath['/_app/posts/']['id'],
-    FileRoutesByPath['/_app/posts/']['path'],
-    FileRoutesByPath['/_app/posts/']['fullPath']
-  >
-}
 
 // Create and export the route tree
 
-interface AppPostsRouteRouteChildren {
-  AppPostsIndexRoute: typeof AppPostsIndexRoute
-}
-
-const AppPostsRouteRouteChildren: AppPostsRouteRouteChildren = {
-  AppPostsIndexRoute: AppPostsIndexRoute,
-}
-
-const AppPostsRouteRouteWithChildren = AppPostsRouteRoute._addFileChildren(
-  AppPostsRouteRouteChildren,
-)
-
 interface AppRouteChildren {
   AppDashboardRouteRoute: typeof AppDashboardRouteRoute
-  AppPostsRouteRoute: typeof AppPostsRouteRouteWithChildren
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRouteRoute: AppDashboardRouteRoute,
-  AppPostsRouteRoute: AppPostsRouteRouteWithChildren,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
@@ -326,13 +266,11 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRouteRoute
   '': typeof AuthRouteWithChildren
   '/dashboard': typeof AppDashboardRouteRoute
-  '/posts': typeof AppPostsRouteRouteWithChildren
   '/forgot-password': typeof AuthForgotPasswordRouteRoute
   '/login': typeof AuthLoginRouteRoute
   '/password-changed': typeof AuthPasswordChangedRouteRoute
   '/reset-password': typeof AuthResetPasswordRouteRoute
   '/signup': typeof AuthSignupRouteRoute
-  '/posts/': typeof AppPostsIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -344,7 +282,6 @@ export interface FileRoutesByTo {
   '/password-changed': typeof AuthPasswordChangedRouteRoute
   '/reset-password': typeof AuthResetPasswordRouteRoute
   '/signup': typeof AuthSignupRouteRoute
-  '/posts': typeof AppPostsIndexRoute
 }
 
 export interface FileRoutesById {
@@ -353,13 +290,11 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/_auth': typeof AuthRouteWithChildren
   '/_app/dashboard': typeof AppDashboardRouteRoute
-  '/_app/posts': typeof AppPostsRouteRouteWithChildren
   '/_auth/forgot-password': typeof AuthForgotPasswordRouteRoute
   '/_auth/login': typeof AuthLoginRouteRoute
   '/_auth/password-changed': typeof AuthPasswordChangedRouteRoute
   '/_auth/reset-password': typeof AuthResetPasswordRouteRoute
   '/_auth/signup': typeof AuthSignupRouteRoute
-  '/_app/posts/': typeof AppPostsIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -368,13 +303,11 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/dashboard'
-    | '/posts'
     | '/forgot-password'
     | '/login'
     | '/password-changed'
     | '/reset-password'
     | '/signup'
-    | '/posts/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -385,20 +318,17 @@ export interface FileRouteTypes {
     | '/password-changed'
     | '/reset-password'
     | '/signup'
-    | '/posts'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/_auth'
     | '/_app/dashboard'
-    | '/_app/posts'
     | '/_auth/forgot-password'
     | '/_auth/login'
     | '/_auth/password-changed'
     | '/_auth/reset-password'
     | '/_auth/signup'
-    | '/_app/posts/'
   fileRoutesById: FileRoutesById
 }
 
@@ -435,8 +365,7 @@ export const routeTree = rootRoute
     "/_app": {
       "filePath": "_app.tsx",
       "children": [
-        "/_app/dashboard",
-        "/_app/posts"
+        "/_app/dashboard"
       ]
     },
     "/_auth": {
@@ -452,13 +381,6 @@ export const routeTree = rootRoute
     "/_app/dashboard": {
       "filePath": "_app/dashboard.route.tsx",
       "parent": "/_app"
-    },
-    "/_app/posts": {
-      "filePath": "_app/posts.route.tsx",
-      "parent": "/_app",
-      "children": [
-        "/_app/posts/"
-      ]
     },
     "/_auth/forgot-password": {
       "filePath": "_auth/forgot-password.route.tsx",
@@ -479,10 +401,6 @@ export const routeTree = rootRoute
     "/_auth/signup": {
       "filePath": "_auth/signup.route.tsx",
       "parent": "/_auth"
-    },
-    "/_app/posts/": {
-      "filePath": "_app/posts.index.tsx",
-      "parent": "/_app/posts"
     }
   }
 }
