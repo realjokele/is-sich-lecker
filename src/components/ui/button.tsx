@@ -1,7 +1,3 @@
-// Changelog
-// 2025-03-29: Changed the button styles
-// 2025-04-01: Imporoved button color styles
-
 import {
   Button as ButtonPrimitive,
   type ButtonProps as ButtonPrimitiveProps,
@@ -11,12 +7,18 @@ import { tv, type VariantProps } from 'tailwind-variants'
 
 const buttonStyles = tv({
   base: [
-    'relative isolate inline-flex items-center justify-center gap-x-2 font-medium',
-    'outline-0 outline-offset-2 focus-visible:outline-2',
-    'inset-ring-(--inset-ring)  inset-ring-1 pressed:bg-(--btn-overlay) dark:inset-ring-fg/15 bg-(--btn-bg) text-(--btn-fg)  dark:shadow-none',
-    'pressed:*:data-[slot=icon]:text-current *:data-[slot=icon]:-mx-0.5 *:data-[slot=icon]:my-1 *:data-[slot=icon]:size-4 *:data-[slot=icon]:shrink-0 *:data-[slot=icon]:text-current/60 *:data-[slot=icon]:transition hovered:*:data-[slot=icon]:text-current/90',
-    '*:data-[slot=avatar]:-mx-0.5 *:data-[slot=avatar]:my-1 *:data-[slot=avatar]:*:size-4 *:data-[slot=avatar]:size-4 *:data-[slot=avatar]:shrink-0',
+    'font-medium outline-0 outline-offset-2 focus-visible:outline-2',
+    // Colors and backgrounds
+    'inset-ring-(--inset-ring) inset-ring-1 pressed:bg-(--btn-overlay) bg-(--btn-bg) text-(--btn-fg)',
     'transition-all duration-200',
+    // Flex layout
+    'relative isolate inline-flex items-center justify-center gap-x-2',
+    // Dark mode
+    'dark:inset-ring-fg/15 dark:shadow-none',
+    // Icon styles
+    '*:data-[slot=icon]:-mx-0.5 *:data-[slot=icon]:my-1 *:data-[slot=icon]:size-4 *:data-[slot=icon]:shrink-0 *:data-[slot=icon]:text-current/60 *:data-[slot=icon]:transition hovered:*:data-[slot=icon]:text-current/90 pressed:*:data-[slot=icon]:text-current',
+    // Avatar styles
+    '*:data-[slot=avatar]:-mx-0.5 *:data-[slot=avatar]:my-1 *:data-[slot=avatar]:*:size-4 *:data-[slot=avatar]:size-4 *:data-[slot=avatar]:shrink-0',
   ],
   variants: {
     intent: {
@@ -112,9 +114,10 @@ const Button = ({ className, intent, size, shape, ref, ...props }: ButtonProps) 
           size,
           shape,
           className,
-        })
+        }),
       )}
     >
+      {/* @ts-ignore  We intentionally want to keep the flexibility of allowing any component as children */}
       {(values) => <>{typeof props.children === 'function' ? props.children(values) : props.children}</>}
     </ButtonPrimitive>
   )

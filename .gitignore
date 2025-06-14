@@ -25,3 +25,4 @@ yarn.lock
 /playwright/.cache/
 
 dev.db
+.tanstack
