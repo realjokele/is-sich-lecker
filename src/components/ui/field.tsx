@@ -71,16 +71,24 @@ const FieldError = ({ className, ref, ...props }: FieldErrorProps) => {
 
 const fieldGroupStyles = tv({
   base: [
+    // Basic layout and appearance
     'group border-input flex h-10 items-center overflow-hidden rounded-lg border shadow-xs transition duration-200 ease-out',
+    // Focus and validation states
     'group-data-invalid:focus-within:border-danger group-data-invalid:focus-within:ring-danger/20 relative focus-within:ring-2',
+    // Progress bar spacing
     '[&>[role=progressbar]:first-child]:ml-2.5 [&>[role=progressbar]:last-child]:mr-2.5',
+    // Icon base styles
     '**:data-[slot=icon]:size-4 **:data-[slot=icon]:shrink-0 **:[button]:shrink-0',
+    // Icon button positioning
     '[&>button:has([data-slot=icon])]:absolute [&>button:has([data-slot=icon]):first-child]:left-0 [&>button:has([data-slot=icon]):last-child]:right-0',
+    // Icon positioning and appearance
     '*:data-[slot=icon]:text-muted-fg *:data-[slot=icon]:pointer-events-none *:data-[slot=icon]:absolute *:data-[slot=icon]:top-[calc(var(--spacing)*2.7)] *:data-[slot=icon]:z-10 *:data-[slot=icon]:size-4',
     '[&>[data-slot=icon]:first-child]:left-2.5 [&>[data-slot=icon]:last-child]:right-2.5',
+    // Input padding with icons
     '[&:has([data-slot=icon]+input)]:pl-6 [&:has(input+[data-slot=icon])]:pr-6',
     '[&:has([data-slot=icon]+[role=group])]:pl-6 [&:has([role=group]+[data-slot=icon])]:pr-6',
     'has-[[data-slot=icon]:last-child]:[&_input]:pr-7',
+    // Button styles
     '*:[button]:h-8 *:[button]:rounded-[calc(var(--radius-sm)-1px)] *:[button]:px-2.5',
     '[&>button:first-child]:ml-[calc(var(--spacing)*0.7)] [&>button:last-child]:mr-[calc(var(--spacing)*0.7)]',
   ],
@@ -101,7 +109,7 @@ const FieldGroup = ({ className, ...props }: GroupProps) => {
         fieldGroupStyles({
           ...renderProps,
           className,
-        })
+        }),
       )}
     />
   )
@@ -116,7 +124,7 @@ const Input = ({ className, ref, ...props }: InputProps) => {
       {...props}
       className={composeTailwindRenderProps(
         className,
-        'text-fg placeholder-muted-fg w-full min-w-0 bg-transparent px-2.5 py-2 text-base outline-hidden data-focused:outline-hidden sm:text-sm/6 [&::-ms-reveal]:hidden [&::-webkit-search-cancel-button]:hidden'
+        'text-fg placeholder-muted-fg w-full min-w-0 bg-transparent px-2.5 py-2 text-base outline-hidden data-focused:outline-hidden sm:text-sm/6 [&::-ms-reveal]:hidden [&::-webkit-search-cancel-button]:hidden',
       )}
     />
   )
