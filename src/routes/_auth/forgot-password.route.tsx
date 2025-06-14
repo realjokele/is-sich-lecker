@@ -1,3 +1,4 @@
+import { createFileRoute } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
 import { z } from 'zod'
 import { ArrowLeftIcon } from 'lucide-react'
@@ -13,7 +14,7 @@ export const forgotPasswordSchema = z.object({
     .max(10, { message: 'Username must be less than 10 characters' }),
 })
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/_auth/forgot-password')({
   component: ForgotPassword,
 })
 

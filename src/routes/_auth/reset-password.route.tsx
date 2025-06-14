@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { useRouter } from '@tanstack/react-router'
+import { useRouter, createFileRoute } from '@tanstack/react-router'
 import { ArrowLeftIcon } from 'lucide-react'
 import z from 'zod/v4'
 
@@ -37,7 +37,7 @@ export const tokenSchema = z.object({
   token: z.string(),
 })
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/_auth/reset-password')({
   component: ResetPassword,
   validateSearch: tokenSchema,
   errorComponent: ({ error }) => {

@@ -1,3 +1,4 @@
+import { createFileRoute } from '@tanstack/react-router'
 import type { Recipe } from '@prisma/client'
 
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query'
@@ -9,7 +10,7 @@ const userRecipesQueryOptions = queryOptions({
   queryFn: () => $getUserRecipes(),
 })
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/_app/dashboard')({
   component: Dashboard,
   loader: ({ context }) => {
     const queryClient = context.queryClient

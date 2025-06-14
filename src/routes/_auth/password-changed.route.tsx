@@ -1,8 +1,8 @@
-import { Link } from '@tanstack/react-router'
+import { Link, createFileRoute } from '@tanstack/react-router'
 import { ArrowLeftIcon, CheckCircleIcon } from 'lucide-react'
 import { Card } from '~/components/ui/card'
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/_auth/password-changed')({
   component: PasswordChanged,
 })
 

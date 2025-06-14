@@ -1,6 +1,6 @@
-import { Outlet, redirect } from '@tanstack/react-router'
+import { Outlet, redirect, createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/_auth')({
   beforeLoad: ({ context }) => {
     if (context.userSession?.session.id) {
       throw redirect({ to: '/dashboard' })

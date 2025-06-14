@@ -1,7 +1,7 @@
 import z from 'zod/v4'
 import { Card } from '~/components/ui/card'
 
-import { useRouter } from '@tanstack/react-router'
+import { useRouter, createFileRoute } from '@tanstack/react-router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { authClient } from '~/lib/auth-client'
@@ -16,7 +16,7 @@ const searchSchema = z.object({
   redirectTo: z.string().optional(),
 })
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/_auth/login')({
   validateSearch: (search) => searchSchema.parse(search),
   component: Login,
 })

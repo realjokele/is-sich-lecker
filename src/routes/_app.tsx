@@ -1,6 +1,6 @@
-import { Outlet, redirect } from '@tanstack/react-router'
+import { Outlet, redirect, createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute({
+export const Route = createFileRoute('/_app')({
   component: AppLayout,
   beforeLoad: async ({ context, location }) => {
     if (!context.userSession?.session.id) {

@@ -48,7 +48,8 @@
       },
       "a11y": {
         "recommended": true,
-        "useKeyWithClickEvents": "warn"
+        "useKeyWithClickEvents": "warn",
+        "useButtonType": "off"
       },
       "nursery": {
         "recommended": true,
