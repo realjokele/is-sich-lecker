@@ -4,6 +4,7 @@ import type { Recipe } from '@prisma/client'
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query'
 import { $getUserRecipes } from '~/server/$get-user-recipes'
 import { cn } from '~/utils/tw'
+import { Link } from '~/components/ui/link'
 
 const userRecipesQueryOptions = queryOptions({
   queryKey: ['recipes'],
@@ -45,7 +46,7 @@ export default function DashboardRecipes({ recipes, className }: DashboardRecipe
     return (
       <div className={cn('flex flex-col items-center justify-center py-12', className)}>
         <p className="text-overlay-fg text-lg">Es sind noch keine Rezepte vorhanden</p>
-        <p className="text-overlay-fg">Erstelle dein erstes Rezept.</p>
+        <Link to="/create-recipe">Erstelle dein erstes Rezept.</Link>
       </div>
     )
   }

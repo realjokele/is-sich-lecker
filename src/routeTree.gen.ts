@@ -20,6 +20,7 @@ import { Route as AuthPasswordChangedRouteRouteImport } from './routes/_auth/pas
 import { Route as AuthLoginRouteRouteImport } from './routes/_auth/login.route'
 import { Route as AuthForgotPasswordRouteRouteImport } from './routes/_auth/forgot-password.route'
 import { Route as AppDashboardRouteRouteImport } from './routes/_app/dashboard.route'
+import { Route as AppCreateRecipeRouteRouteImport } from './routes/_app/create-recipe.route'
 import { ServerRoute as ApiAuthSplatServerRouteImport } from './routes/api/auth/$'
 
 const rootServerRouteImport = createServerRootRoute()
@@ -68,6 +69,11 @@ const AppDashboardRouteRoute = AppDashboardRouteRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCreateRecipeRouteRoute = AppCreateRecipeRouteRouteImport.update({
+  id: '/create-recipe',
+  path: '/create-recipe',
+  getParentRoute: () => AppRoute,
+} as any)
 const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -76,6 +82,7 @@ const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRouteRoute
+  '/create-recipe': typeof AppCreateRecipeRouteRoute
   '/dashboard': typeof AppDashboardRouteRoute
   '/forgot-password': typeof AuthForgotPasswordRouteRoute
   '/login': typeof AuthLoginRouteRoute
@@ -85,6 +92,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRouteRoute
+  '/create-recipe': typeof AppCreateRecipeRouteRoute
   '/dashboard': typeof AppDashboardRouteRoute
   '/forgot-password': typeof AuthForgotPasswordRouteRoute
   '/login': typeof AuthLoginRouteRoute
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/': typeof IndexRouteRoute
   '/_app': typeof AppRouteWithChildren
   '/_auth': typeof AuthRouteWithChildren
+  '/_app/create-recipe': typeof AppCreateRecipeRouteRoute
   '/_app/dashboard': typeof AppDashboardRouteRoute
   '/_auth/forgot-password': typeof AuthForgotPasswordRouteRoute
   '/_auth/login': typeof AuthLoginRouteRoute
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/create-recipe'
     | '/dashboard'
     | '/forgot-password'
     | '/login'
@@ -117,6 +127,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/create-recipe'
     | '/dashboard'
     | '/forgot-password'
     | '/login'
@@ -128,6 +139,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_app'
     | '/_auth'
+    | '/_app/create-recipe'
     | '/_app/dashboard'
     | '/_auth/forgot-password'
     | '/_auth/login'
@@ -228,6 +240,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/create-recipe': {
+      id: '/_app/create-recipe'
+      path: '/create-recipe'
+      fullPath: '/create-recipe'
+      preLoaderRoute: typeof AppCreateRecipeRouteRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 declare module '@tanstack/react-start/server' {
@@ -243,10 +262,12 @@ declare module '@tanstack/react-start/server' {
 }
 
 interface AppRouteChildren {
+  AppCreateRecipeRouteRoute: typeof AppCreateRecipeRouteRoute
   AppDashboardRouteRoute: typeof AppDashboardRouteRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppCreateRecipeRouteRoute: AppCreateRecipeRouteRoute,
   AppDashboardRouteRoute: AppDashboardRouteRoute,
 }
 

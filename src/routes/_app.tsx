@@ -1,4 +1,5 @@
 import { Outlet, redirect, createFileRoute } from '@tanstack/react-router'
+import { Toast } from '~/components/ui/toast'
 
 export const Route = createFileRoute('/_app')({
   component: AppLayout,
@@ -22,6 +23,7 @@ function AppLayout() {
           </header>
           <main className="flex-1 px-4">
             <Outlet />
+            <Toast />
           </main>
         </div>
       </div>
