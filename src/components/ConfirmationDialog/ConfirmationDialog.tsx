@@ -1,13 +1,13 @@
 import {
   AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
+  AlertDialogClose,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogPopup,
   AlertDialogTitle,
 } from '~/components/ui/alert-dialog'
+import { buttonVariants } from '~/components/ui/button'
 
 type ConfirmationDialogProps = {
   open: boolean
@@ -30,16 +30,18 @@ export function ConfirmationDialog({
 }: ConfirmationDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
+      <AlertDialogPopup>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>{cancelButtonText}</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm}>{confirmButtonText}</AlertDialogAction>
+          <AlertDialogClose className={buttonVariants({ variant: 'outline' })}>{cancelButtonText}</AlertDialogClose>
+          <AlertDialogClose className={buttonVariants({ variant: 'default' })} onClick={onConfirm}>
+            {confirmButtonText}
+          </AlertDialogClose>
         </AlertDialogFooter>
-      </AlertDialogContent>
+      </AlertDialogPopup>
     </AlertDialog>
   )
 }

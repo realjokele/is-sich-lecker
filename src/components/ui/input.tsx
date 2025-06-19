@@ -1,10 +1,11 @@
+import { Input as BaseInput } from '@base-ui-components/react/input'
 import type * as React from 'react'
 
 import { cn } from '~/utils/cn'
 
 function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
   return (
-    <input
+    <BaseInput
       type={type}
       data-slot="input"
       className={cn(
