@@ -1,20 +1,20 @@
+import { Input } from '~/components/ui/input'
 import { useFieldContext } from '~/lib/form'
-import { TextField as TextFieldPrimitive, type TextFieldProps } from '~/components/ui/textfield'
 
-export function TextField(props: TextFieldProps) {
+export function TextField(props: typeof Input) {
   const field = useFieldContext<string>()
 
   const errorMessage = field.state.meta.errors.map((err) => err?.message).join(',')
 
   return (
     <>
-      <TextFieldPrimitive
+      <Input
         {...props}
         value={field.state.value}
-        onChange={field.handleChange}
+        onChange={(e) => field.handleChange(e.target.value)}
         onBlur={field.handleBlur}
-        isInvalid={!field.state.meta.isValid}
-        errorMessage={errorMessage}
+        // isInvalid={!field.state.meta.isValid}
+        // errorMessage={errorMessage}
       />
     </>
   )

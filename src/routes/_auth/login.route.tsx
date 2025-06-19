@@ -1,12 +1,12 @@
 import z from 'zod/v4'
-import { Card } from '~/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 
-import { useRouter, createFileRoute } from '@tanstack/react-router'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Link, createFileRoute, useRouter } from '@tanstack/react-router'
 
 import { authClient } from '~/lib/auth-client'
 import { useAppForm } from '~/lib/form'
-import { Link } from '~/components/ui/link'
+
 const loginSchema = z.object({
   username: z.string().min(1, { message: 'Username is required' }),
   password: z.string().min(8, { message: 'Password is required' }),
@@ -26,13 +26,13 @@ function Login() {
 
   return (
     <Card className="mx-auto w-full max-w-[500px] border-0 md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:border py-16 px-8">
-      <Card.Header>
-        <Card.Title>Login</Card.Title>
-      </Card.Header>
+      <CardHeader>
+        <CardTitle>Login</CardTitle>
+      </CardHeader>
 
-      <Card.Content>
+      <CardContent>
         <LoginForm redirectTo={redirectTo} />
-      </Card.Content>
+      </CardContent>
     </Card>
   )
 }

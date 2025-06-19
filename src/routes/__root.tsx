@@ -1,18 +1,17 @@
-import { useRouter, HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import type { Session, User } from 'better-auth'
+import { HeadContent, Link, Outlet, Scripts, createRootRouteWithContext, useRouter } from '@tanstack/react-router'
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { createServerFn } from '@tanstack/react-start'
+import type { Session, User } from 'better-auth'
 
-import { userSessionMiddleware } from '~/middleware/auth.middleware'
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary.js'
 import { NotFound } from '~/components/NotFound.js'
+import { Button } from '~/components/ui/button'
+import { authClient } from '~/lib/auth-client'
+import { userSessionMiddleware } from '~/middleware/auth.middleware'
 import appCss from '~/styles/tailwind.css?url'
 import { seo } from '~/utils/seo.js'
-import { Link } from '~/components/ui/link'
-import { authClient } from '~/lib/auth-client'
-import { Button } from '~/components/ui/button'
 
 const queryClient = new QueryClient()
 

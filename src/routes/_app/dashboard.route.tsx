@@ -1,10 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router'
 import type { Recipe } from '@prisma/client'
+import { Link, createFileRoute } from '@tanstack/react-router'
 
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query'
 import { $getUserRecipes } from '~/server/$get-user-recipes'
-import { cn } from '~/utils/tw'
-import { Link } from '~/components/ui/link'
+import { cn } from '~/utils/cn'
 
 const userRecipesQueryOptions = queryOptions({
   queryKey: ['recipes'],

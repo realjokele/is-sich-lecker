@@ -1,12 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router'
 import { useMutation } from '@tanstack/react-query'
-import { z } from 'zod'
+import { Link, createFileRoute } from '@tanstack/react-router'
 import { ArrowLeftIcon } from 'lucide-react'
+import { z } from 'zod'
 
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card'
 import { useAppForm } from '~/lib/form'
-import { Card } from '~/components/ui/card'
 import { forgotPassword } from '~/server/auth/$forgot-password'
-import { Link } from '~/components/ui/link'
 export const forgotPasswordSchema = z.object({
   username: z
     .string()
@@ -21,25 +20,25 @@ export const Route = createFileRoute('/_auth/forgot-password')({
 export default function ForgotPassword() {
   return (
     <Card className="mx-auto w-full max-w-[500px] border-0 md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:border [--card-spacing:24px] py-16 px-8">
-      <Card.Header>
-        <Card.Title>Forgot password</Card.Title>
-        <Card.Description>
+      <CardHeader>
+        <CardTitle>Forgot password</CardTitle>
+        <CardDescription>
           Please enter your username to receive a verification code to reset your password.
-        </Card.Description>
-      </Card.Header>
+        </CardDescription>
+      </CardHeader>
 
-      <Card.Content>
+      <CardContent>
         <ForgotPasswordForm />
-      </Card.Content>
+      </CardContent>
 
-      <Card.Footer>
+      <CardFooter>
         <div className="flex items-center justify-center">
           <Link to="/login">
             <ArrowLeftIcon data-slot="icon" className="mr-1.5 h-4 w-4" />
             Back to login
           </Link>
         </div>
-      </Card.Footer>
+      </CardFooter>
     </Card>
   )
 }

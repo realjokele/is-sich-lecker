@@ -1,127 +1,50 @@
-import {
-  Button as ButtonPrimitive,
-  type ButtonProps as ButtonPrimitiveProps,
-  composeRenderProps,
-} from 'react-aria-components'
-import { tv, type VariantProps } from 'tailwind-variants'
+import { Slot } from '@radix-ui/react-slot'
+import { type VariantProps, cva } from 'class-variance-authority'
+import type * as React from 'react'
 
-const buttonStyles = tv({
-  base: [
-    'font-medium outline-0 outline-offset-2 focus-visible:outline-2',
-    // Colors and backgrounds
-    'inset-ring-(--inset-ring) inset-ring-1 pressed:bg-(--btn-overlay) bg-(--btn-bg) text-(--btn-fg)',
-    'transition-all duration-200',
-    // Flex layout
-    'relative isolate inline-flex items-center justify-center gap-x-2',
-    // Dark mode
-    'dark:inset-ring-fg/15 dark:shadow-none',
-    // Icon styles
-    '*:data-[slot=icon]:-mx-0.5 *:data-[slot=icon]:my-1 *:data-[slot=icon]:size-4 *:data-[slot=icon]:shrink-0 *:data-[slot=icon]:text-current/60 *:data-[slot=icon]:transition hovered:*:data-[slot=icon]:text-current/90 pressed:*:data-[slot=icon]:text-current',
-    // Avatar styles
-    '*:data-[slot=avatar]:-mx-0.5 *:data-[slot=avatar]:my-1 *:data-[slot=avatar]:*:size-4 *:data-[slot=avatar]:size-4 *:data-[slot=avatar]:shrink-0',
-  ],
-  variants: {
-    intent: {
-      primary: [
-        'outline-primary [--btn-bg:theme(--color-primary)] inset-ring-0 [--btn-fg:var(--color-primary-fg)] [--btn-overlay:theme(--color-primary/92%)]',
-      ],
-      secondary: [
-        'outline-primary [--btn-bg:theme(--color-button-secondary)] [--btn-fg:var(--color-button-secondary-fg)] [--btn-overlay:theme(--color-button-secondary/90%)]',
-        '[--inset-ring:theme(--color-button-secondary)] [--btn-hovered-bg:theme(--color-button-secondary-fg/4%)]',
-      ],
-      warning: [
-        'outline-warning [--btn-bg:theme(--color-warning)] [--btn-fg:var(--color-warning-fg)] [--btn-overlay:theme(--color-warning/85%)]',
-      ],
-      'secondary-warning': [
-        'outline-primary [--btn-bg:theme(--color-button-warning-secondary)] [--btn-fg:var(--color-button-warning-secondary-fg)] [--btn-overlay:theme(--color-button-warning-secondary/90%)]',
-        '[--inset-ring:theme(--color-button-warning-secondary-fg)] [--btn-hovered-bg:theme(--color-button-warning-secondary-fg/4%)]',
-      ],
-      danger: [
-        'outline-danger [--btn-bg:theme(--color-danger)] [--btn-fg:var(--color-danger-fg)] [--btn-overlay:theme(--color-danger/80%)]',
-      ],
-      'secondary-danger': [
-        'outline-primary [--btn-bg:theme(--color-button-danger-secondary)] [--btn-fg:var(--color-button-danger-secondary-fg)] [--btn-overlay:theme(--color-button-danger-secondary/90%)]',
-        '[--inset-ring:theme(--color-button-danger-secondary)] [--btn-hovered-bg:theme(--color-button-danger-secondary/70%)]',
-      ],
-      outline: [
-        'outline-primary hovered:ring-primary/20 shadow-none [--btn-fg:var(--color-fg)] [--inset-ring:theme(--color-fg/20%)] ',
-      ],
-      plain: [
-        'outline-primary [--btn-overlay:theme(--color-secondary/90%)] shadow-none inset-ring-transparent [--btn-fg:var(--color-fg)] dark:inset-ring-transparent',
-      ],
+import { cn } from '~/utils/cn'
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap  hover:cursor-pointer rounded-md text-sm font-medium transition-all  disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  {
+    variants: {
+      variant: {
+        default: 'bg-primary text-primary-foreground shadow-xs hover:bg-primary/90',
+        destructive:
+          'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
+        outline:
+          'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
+        secondary: 'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
+        ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
+        link: 'text-primary underline-offset-4 hover:underline',
+      },
+      size: {
+        default: 'h-9 px-4 py-2 has-[>svg]:px-3',
+        sm: 'h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5',
+        lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
+        icon: 'size-9',
+      },
     },
-    size: {
-      'extra-small':
-        'h-8 px-[calc(var(--spacing)*2.7)] text-xs/4 **:data-[slot=avatar]:size-3.5 **:data-[slot=avatar]:*:size-3.5 **:data-[slot=icon]:size-3 lg:text-[0.800rem]/4',
-      small: 'h-9 px-3.5 text-sm/5 sm:text-sm/5',
-      medium: 'h-10 px-4 text-base sm:text-sm/6',
-      large: 'h-11 px-4.5 text-base *:data-[slot=icon]:mx-[-1.5px] sm:*:data-[slot=icon]:size-5 lg:text-base/7',
-      'square-petite': 'size-9 shrink-0',
-    },
-    shape: {
-      square: 'rounded-lg',
-      circle: 'rounded-full',
-    },
-    isDisabled: {
-      false: 'cursor-pointer',
-      true: 'cursor-default border-0 opacity-50 ring-0 inset-shadow-none dark:inset-ring-0',
-    },
-    isPending: {
-      true: 'cursor-default opacity-50',
-    },
-    isHovered: {
-      false: '',
-      true: 'hover:no-underline',
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
     },
   },
-  defaultVariants: {
-    intent: 'primary',
-    size: 'medium',
-    shape: 'square',
-  },
-  compoundVariants: [
-    {
-      intent: ['primary', 'warning', 'danger'],
-      isHovered: true,
-      className: 'bg-(--btn-overlay)',
-    },
-    {
-      intent: 'secondary',
-      isHovered: true,
-      className: 'inset-ring-(--color-button-secondary-fg)/85  bg-(--btn-hovered-bg)',
-    },
-    {
-      intent: ['secondary-warning', 'secondary-danger'],
-      isHovered: true,
-      className: 'inset-ring-(--color-button-warning-secondary-fg)/75  bg-(--btn-hovered-bg)',
-    },
-  ],
-})
+)
 
-interface ButtonProps extends ButtonPrimitiveProps, VariantProps<typeof buttonStyles> {
-  ref?: React.Ref<HTMLButtonElement>
+function Button({
+  className,
+  variant,
+  size,
+  asChild = false,
+  ...props
+}: React.ComponentProps<'button'> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean
+  }) {
+  const Comp = asChild ? Slot : 'button'
+
+  return <Comp data-slot="button" className={cn(buttonVariants({ variant, size, className }))} {...props} />
 }
 
-const Button = ({ className, intent, size, shape, ref, ...props }: ButtonProps) => {
-  return (
-    <ButtonPrimitive
-      ref={ref}
-      {...props}
-      className={composeRenderProps(className, (className, renderProps) =>
-        buttonStyles({
-          ...renderProps,
-          intent,
-          size,
-          shape,
-          className,
-        }),
-      )}
-    >
-      {/* @ts-ignore  We intentionally want to keep the flexibility of allowing any component as children */}
-      {(values) => <>{typeof props.children === 'function' ? props.children(values) : props.children}</>}
-    </ButtonPrimitive>
-  )
-}
-
-export type { ButtonProps }
-export { Button, buttonStyles }
+export { Button, buttonVariants }

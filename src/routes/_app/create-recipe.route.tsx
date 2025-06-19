@@ -1,12 +1,12 @@
 import { useMutation } from '@tanstack/react-query'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { PlusIcon } from 'lucide-react'
+import React from 'react'
 import { toast } from 'sonner'
+import { ConfirmationDialog } from '~/components/ConfirmationDialog'
 import { EditableText } from '~/components/EditableText'
-import { Link } from '~/components/ui/link'
-import { cn } from '~/utils/tw'
+import { Button } from '~/components/ui/button'
 import { $changeRecipeTitle } from '~/server/$change-recipe-title'
-import { buttonStyles } from '~/components/ui/button'
 
 export const Route = createFileRoute('/_app/create-recipe')({
   component: CreateRecipe,
@@ -23,6 +23,9 @@ function useChangeTitle() {
 
 export default function CreateRecipe() {
   const { mutate } = useChangeTitle()
+  const navigate = useNavigate()
+  const [recipeTitle, setRecipeTitle] = React.useState('')
+  const [confirmationOpen, setConfirmationOpen] = React.useState(false)
 
   function handleChangeTitle(title: string) {
     mutate({ title })
@@ -35,16 +38,19 @@ export default function CreateRecipe() {
           <div className="flex justify-between">
             <div className="flex gap-2">
               <EditableText
-                fieldName="newTitle"
-                value=""
+                fieldName="recipeTitle"
+                value={recipeTitle}
                 className="text-overlay-fg font-bold hover:cursor-pointer sm:text-3xl"
-                mutationFn={handleChangeTitle}
+                onChangeValue={setRecipeTitle}
                 placeholder="Rezeptname"
               />
             </div>
-            <Link to={'/dashboard'} className={cn(buttonStyles({ size: 'large' }), 'px-10')}>
-              Fertig
-            </Link>
+            <div className="flex gap-4">
+              <Button variant="secondary" onClick={() => setConfirmationOpen(true)}>
+                Abbrechen
+              </Button>
+              <Button onClick={() => navigate({ to: '/dashboard' })}>Rezept speichern</Button>
+            </div>
           </div>
 
           <div className="mt-8 flex flex-col gap-8 lg:flex-row">
@@ -77,6 +83,16 @@ export default function CreateRecipe() {
           </div>
         </div>
       </div>
+
+      <ConfirmationDialog
+        title="Möchtest du das Rezept wirklich verwerfen?"
+        description="Alle nicht gespeicherten Änderungen gehen verloren."
+        confirmButtonText="Verwerfen"
+        cancelButtonText="Abbrechen"
+        open={confirmationOpen}
+        onOpenChange={setConfirmationOpen}
+        onConfirm={() => navigate({ to: '/dashboard' })}
+      />
     </div>
   )
 }

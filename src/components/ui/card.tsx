@@ -1,15 +1,12 @@
-import type React from 'react'
+import type * as React from 'react'
 
-import { cn } from '~/utils/tw'
+import { cn } from '~/utils/cn'
 
 function Card({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="card"
-      className={cn(
-        'bg-card text-card-foreground flex flex-col gap-6 rounded-xl md:border py-6 md:shadow-sm',
-        className,
-      )}
+      className={cn('bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm', className)}
       {...props}
     />
   )
@@ -33,7 +30,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<'div'>) {
 }
 
 function CardDescription({ className, ...props }: React.ComponentProps<'div'>) {
-  return <div data-slot="card-description" className={cn('text-muted-foreground text-sm pt-2', className)} {...props} />
+  return <div data-slot="card-description" className={cn('text-muted-foreground text-sm', className)} {...props} />
 }
 
 function CardAction({ className, ...props }: React.ComponentProps<'div'>) {
@@ -53,12 +50,5 @@ function CardContent({ className, ...props }: React.ComponentProps<'div'>) {
 function CardFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return <div data-slot="card-footer" className={cn('flex items-center px-6 [.border-t]:pt-6', className)} {...props} />
 }
-
-Card.Content = CardContent
-Card.Footer = CardFooter
-Card.Header = CardHeader
-Card.Title = CardTitle
-Card.Description = CardDescription
-Card.Action = CardAction
 
 export { Card, CardHeader, CardFooter, CardTitle, CardAction, CardDescription, CardContent }

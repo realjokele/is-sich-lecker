@@ -1,10 +1,9 @@
 import { useMutation } from '@tanstack/react-query'
-import { useRouter, createFileRoute } from '@tanstack/react-router'
+import { Link, createFileRoute, useRouter } from '@tanstack/react-router'
 import { ArrowLeftIcon } from 'lucide-react'
 import z from 'zod/v4'
 
 import { Card } from '~/components/ui/card'
-import { Link } from '~/components/ui/link'
 import { useAppForm } from '~/lib/form'
 import { resetPassword } from '~/server/auth/$reset-password'
 

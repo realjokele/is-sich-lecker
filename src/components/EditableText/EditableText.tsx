@@ -1,23 +1,21 @@
 import React from 'react'
-import { Button as RACButton } from 'react-aria-components'
 import { flushSync } from 'react-dom'
 
-import { cn } from '~/utils/tw'
+import { Check, Pencil } from 'lucide-react'
+import { cn } from '~/utils/cn'
 import { Button } from '../ui/button'
-import { FieldGroup, Input } from '../ui/field'
-import { Pencil, Check } from 'lucide-react'
+import { Input } from '../ui/input'
 
 type EditableTextProps = {
   fieldName: string
   value: string
+  onChangeValue: (value: string) => void
   className?: string
-  mutationFn: (test: string) => void
   placeholder?: string
 }
 
-export function EditableText({ fieldName, value, className, placeholder, mutationFn }: EditableTextProps) {
+export function EditableText({ fieldName, value, onChangeValue, className, placeholder }: EditableTextProps) {
   const [isEditing, setIsEditing] = React.useState(false)
-  const [displayValue, setDisplayValue] = React.useState(value)
   const inputRef = React.useRef<HTMLInputElement>(null)
   const buttonRef = React.useRef<HTMLButtonElement>(null)
 
@@ -41,7 +39,7 @@ export function EditableText({ fieldName, value, className, placeholder, mutatio
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
-    mutationFn(String(formData.get(fieldName)))
+    onChangeValue(String(formData.get(fieldName)))
     flushSync(() => {
       setIsEditing(false)
     })
@@ -49,55 +47,54 @@ export function EditableText({ fieldName, value, className, placeholder, mutatio
   }
 
   if (!isEditing) {
-    const displayPlaceholder = !displayValue || displayValue.length === 0
+    const displayPlaceholder = !value || value.length === 0
 
     return (
-      <RACButton
+      <Button
+        variant="ghost"
         className={cn(
           'min-w-[100px] py-1 pr-2 pl-0 text-left focus:outline-none',
           className,
-          (!displayValue || displayValue.length === 0) && 'text-muted-fg',
+          (!value || value.length === 0) && 'text-muted-fg',
         )}
-        onPress={handlePress}
+        onClick={handlePress}
         ref={buttonRef}
       >
-        <span className="flex items-center gap-4 ring-2">
+        <span className="flex items-center gap-4">
           <span className={cn(displayPlaceholder && 'placeholder-muted-fg')}>
-            {displayPlaceholder ? placeholder : displayValue}
+            {displayPlaceholder ? placeholder : value}
           </span>
           <Pencil className="h-5 w-5 text-gray-400" />
         </span>
-      </RACButton>
+      </Button>
     )
   }
 
   return (
     <form method="post" onSubmit={(e) => handleSubmit(e)}>
       <div className="flex items-center gap-2">
-        <FieldGroup>
-          <Input
-            name={fieldName}
-            type="text"
-            defaultValue={value}
-            className={cn(
-              'min-w-[100px] rounded py-1 pr-2 pl-0 text-left text-3xl outline-1 outline-gray-300 focus:outline-2 focus:outline-blue-500',
-              className,
-            )}
-            autoFocus
-            onKeyDown={handleKeyDown}
-            aria-label="Title"
-            placeholder={placeholder}
-            // onBlur={(event) => {
-            //   if (inputRef.current?.value !== value) {
-            //     mutationFn(inputRef.current?.value)
-            //   } else {
-            //     setIsEditing(false)
-            //   }
-            //   buttonRef.current?.focus()
-            // }}
-            // ref={inputRef}
-          />
-        </FieldGroup>
+        <Input
+          name={fieldName}
+          type="text"
+          defaultValue={value}
+          className={cn(
+            'min-w-[100px] rounded py-1 pr-2 pl-0 text-left !text-3xl outline-1 outline-gray-300 focus:outline-2 focus:outline-blue-500',
+            className,
+          )}
+          autoFocus
+          onKeyDown={handleKeyDown}
+          aria-label="Title"
+          placeholder={placeholder}
+          // onBlur={(event) => {
+          //   if (inputRef.current?.value !== value) {
+          //     mutationFn(inputRef.current?.value)
+          //   } else {
+          //     setIsEditing(false)
+          //   }
+          //   buttonRef.current?.focus()
+          // }}
+          // ref={inputRef}
+        />
         <Button type="submit">
           <Check className="h-5 w-5" />
         </Button>

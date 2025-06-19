@@ -15,7 +15,7 @@
     "lineWidth": 120
   },
   "organizeImports": {
-    "enabled": false
+    "enabled": true
   },
   "linter": {
     "enabled": true,
