@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { PlusIcon } from 'lucide-react'
-import { toast as sonnerToast } from 'sonner'
+import { toast } from 'sonner'
 import { EditableText } from '~/components/EditableText'
 import { Link } from '~/components/ui/link'
 import { cn } from '~/utils/tw'
@@ -12,38 +12,11 @@ export const Route = createFileRoute('/_app/create-recipe')({
   component: CreateRecipe,
 })
 
-function useToast() {
-  function toast({ type, message }: { type: 'error' | 'success'; message: string }) {
-    switch (type) {
-      case 'error':
-        sonnerToast.error(message)
-        break
-      case 'success':
-        sonnerToast.success(message)
-        break
-      default:
-        break
-    }
-  }
-  return toast
-}
-
 function useChangeTitle() {
-  const toast = useToast()
-
   return useMutation({
     mutationFn: ({ title }: { title: string }) => $changeRecipeTitle({ data: title }),
-    onSuccess: (data) => {
-      toast({
-        type: 'success',
-        message: 'hat geklappt',
-      })
-    },
     onError: (error) => {
-      toast({
-        type: 'error',
-        message: error.message,
-      })
+      toast.error(error.message)
     },
   })
 }
@@ -63,9 +36,10 @@ export default function CreateRecipe() {
             <div className="flex gap-2">
               <EditableText
                 fieldName="newTitle"
-                value={'recipe.title'}
+                value=""
                 className="text-overlay-fg font-bold hover:cursor-pointer sm:text-3xl"
                 mutationFn={handleChangeTitle}
+                placeholder="Rezeptname"
               />
             </div>
             <Link to={'/dashboard'} className={cn(buttonStyles({ size: 'large' }), 'px-10')}>

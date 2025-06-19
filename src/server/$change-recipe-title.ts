@@ -21,9 +21,9 @@ export const $changeRecipeTitle = createServerFn()
   .handler(async (ctx) => {
     const { userSession } = ctx.context
     const titel = ctx.data
-    console.log(titel)
-    throw toastError({
-      type: 'success',
-      message: 'Hat geklappt',
-    })
+
+    // throw toastError({
+    //   type: 'success',
+    //   message: 'Hat geklappt',
+    // })
   })
