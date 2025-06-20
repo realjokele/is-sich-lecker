@@ -1,4 +1,4 @@
-import { type TextFieldProps, TextField as UITextField } from '~/components/ui/textfield'
+import { type TextFieldProps, TextField as UITextField } from '~/components/rac-ui/textfield'
 import { useFieldContext } from '~/lib/form'
 
 export function TextField(props: TextFieldProps) {
@@ -11,7 +11,7 @@ export function TextField(props: TextFieldProps) {
       <UITextField
         {...props}
         value={field.state.value}
-        onChange={(e) => field.handleChange(e.target.value)}
+        onChange={(e) => field.handleChange(e)}
         onBlur={field.handleBlur}
         invalid={!field.state.meta.isValid}
         errorMessage={errorMessage}

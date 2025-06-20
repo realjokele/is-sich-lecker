@@ -1,4 +1,4 @@
-import { Button, type ButtonProps } from '~/components/ui/button'
+import { Button, type ButtonProps } from '~/components/rac-ui/button'
 import { useFormContext } from '~/lib/form'
 
 type SubmitButtonProps = ButtonProps & {
