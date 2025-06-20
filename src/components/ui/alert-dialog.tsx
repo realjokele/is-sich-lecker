@@ -3,24 +3,24 @@ import type * as React from 'react'
 
 import { cn } from '~/utils/cn'
 
-function AlertDialog({ ...props }: React.ComponentProps<typeof BaseAlertDialog.Root>) {
+const AlertDialog = ({ ...props }: React.ComponentProps<typeof BaseAlertDialog.Root>) => {
   return <BaseAlertDialog.Root data-slot="alert-dialog" {...props} />
 }
 
-function AlertDialogTrigger({ ...props }: React.ComponentProps<typeof BaseAlertDialog.Trigger>) {
+const AlertDialogTrigger = ({ ...props }: React.ComponentProps<typeof BaseAlertDialog.Trigger>) => {
   return <BaseAlertDialog.Trigger data-slot="alert-dialog-trigger" {...props} />
 }
 
-function AlertDialogPortal({ ...props }: React.ComponentProps<typeof BaseAlertDialog.Portal>) {
+const AlertDialogPortal = ({ ...props }: React.ComponentProps<typeof BaseAlertDialog.Portal>) => {
   return <BaseAlertDialog.Portal data-slot="alert-dialog-portal" {...props} />
 }
 
-function AlertDialogBackdrop({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Backdrop>) {
+const AlertDialogBackdrop = ({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Backdrop>) => {
   return (
     <BaseAlertDialog.Backdrop
       data-slot="alert-dialog-backdrop"
       className={cn(
-        'duration-250 data-[open]:animate-in data-[ending-style]:animate-out data-[ending-style]:fade-out-0 data-[open]:fade-in-0 fixed inset-0 z-50 bg-black/60',
+        'duration-250 data-[open]:animate-in data-[ending-style]:animate-out data-[ending-style]:fade-out-0 data-[open]:fade-in-0 fixed inset-0 z-50 bg-black/40',
         className,
       )}
       {...props}
@@ -28,7 +28,7 @@ function AlertDialogBackdrop({ className, ...props }: React.ComponentProps<typeo
   )
 }
 
-function AlertDialogPopup({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Popup>) {
+const AlertDialogPopup = ({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Popup>) => {
   return (
     <AlertDialogPortal>
       <AlertDialogBackdrop />
@@ -46,7 +46,7 @@ function AlertDialogPopup({ className, ...props }: React.ComponentProps<typeof B
   )
 }
 
-function AlertDialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
+const AlertDialogHeader = ({ className, ...props }: React.ComponentProps<'div'>) => {
   return (
     <div
       data-slot="alert-dialog-header"
@@ -56,7 +56,7 @@ function AlertDialogHeader({ className, ...props }: React.ComponentProps<'div'>)
   )
 }
 
-function AlertDialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
+const AlertDialogFooter = ({ className, ...props }: React.ComponentProps<'div'>) => {
   return (
     <div
       data-slot="alert-dialog-footer"
@@ -66,7 +66,7 @@ function AlertDialogFooter({ className, ...props }: React.ComponentProps<'div'>)
   )
 }
 
-function AlertDialogTitle({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Title>) {
+const AlertDialogTitle = ({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Title>) => {
   return (
     <BaseAlertDialog.Title
       data-slot="alert-dialog-title"
@@ -76,7 +76,7 @@ function AlertDialogTitle({ className, ...props }: React.ComponentProps<typeof B
   )
 }
 
-function AlertDialogDescription({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Description>) {
+const AlertDialogDescription = ({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Description>) => {
   return (
     <BaseAlertDialog.Description
       data-slot="alert-dialog-description"
@@ -86,18 +86,17 @@ function AlertDialogDescription({ className, ...props }: React.ComponentProps<ty
   )
 }
 
-function AlertDialogClose({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Close>) {
+const AlertDialogClose = ({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Close>) => {
   return <BaseAlertDialog.Close className={className} {...props} />
 }
 
-export {
-  AlertDialog,
-  AlertDialogPortal,
-  AlertDialogPopup,
-  AlertDialogTrigger,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogClose,
-}
+AlertDialog.Portal = AlertDialogPortal
+AlertDialog.Popup = AlertDialogPopup
+AlertDialog.Trigger = AlertDialogTrigger
+AlertDialog.Header = AlertDialogHeader
+AlertDialog.Footer = AlertDialogFooter
+AlertDialog.Title = AlertDialogTitle
+AlertDialog.Description = AlertDialogDescription
+AlertDialog.Close = AlertDialogClose
+
+export { AlertDialog }

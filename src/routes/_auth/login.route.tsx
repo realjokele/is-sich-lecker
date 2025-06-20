@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link, createFileRoute, useRouter } from '@tanstack/react-router'
 
+import { Input } from '~/components/ui/input'
 import { authClient } from '~/lib/auth-client'
 import { useAppForm } from '~/lib/form'
 
@@ -86,11 +87,8 @@ function LoginForm({ redirectTo }: { redirectTo: string | undefined }) {
 
           <form.AppField name="username" children={(field) => <field.TextField label="Username" />} />
 
-          <div className="^w-full space-y-2">
-            <form.AppField
-              name="password"
-              children={(field) => <field.TextField label="Password" type="password" isRevealable />}
-            />
+          <div className="w-full space-y-2">
+            <form.AppField name="password" children={(field) => <field.TextField label="Password" type="password" />} />
             <Link to="/forgot-password">Passwort vergessen?</Link>
           </div>
           <form.AppForm>
