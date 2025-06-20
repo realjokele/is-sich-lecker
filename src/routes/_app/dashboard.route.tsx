@@ -2,6 +2,7 @@ import type { Recipe } from '@prisma/client'
 import { Link, createFileRoute } from '@tanstack/react-router'
 
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query'
+import { Button } from '~/components/ui/button'
 import { $getUserRecipes } from '~/server/$get-user-recipes'
 import { cn } from '~/utils/cn'
 
@@ -45,7 +46,7 @@ export default function DashboardRecipes({ recipes, className }: DashboardRecipe
     return (
       <div className={cn('flex flex-col items-center justify-center py-12', className)}>
         <p className="text-overlay-fg text-lg">Es sind noch keine Rezepte vorhanden</p>
-        <Link to="/create-recipe">Erstelle dein erstes Rezept.</Link>
+        <Button render={<Link to="/create-recipe" />}>Erstelle dein erstes Rezept.</Button>
       </div>
     )
   }
