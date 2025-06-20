@@ -5,13 +5,13 @@ type SubmitButtonProps = ButtonProps & {
   isSubmitting?: boolean
 }
 
-export function SubmitButton({ isSubmitting, type = 'submit', isDisabled, className, ...props }: SubmitButtonProps) {
+export function SubmitButton({ isSubmitting, type = 'submit', disabled, className, ...props }: SubmitButtonProps) {
   const form = useFormContext()
 
   return (
     <form.Subscribe selector={(state) => state.isSubmitting}>
       {(isSubmitting) => (
-        <Button type="submit" isDisabled={isSubmitting || isDisabled} className={className}>
+        <Button type="submit" disabled={isSubmitting || disabled} className={className}>
           Submit
         </Button>
       )}
