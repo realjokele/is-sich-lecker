@@ -1,61 +1,54 @@
-import type { Recipe } from '@prisma/client'
-import { Link, createFileRoute } from '@tanstack/react-router'
-
-import { queryOptions, useSuspenseQuery } from '@tanstack/react-query'
+import { queryOptions, useMutation, useSuspenseQuery } from '@tanstack/react-query'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { toast } from 'sonner'
+import { DashboardRecipes } from '~/components/DashboardRecipes'
 import { Button } from '~/components/ui/button'
+import { $createRecipe } from '~/server/$create-recipe'
 import { $getUserRecipes } from '~/server/$get-user-recipes'
-import { cn } from '~/utils/cn'
+
+export const Route = createFileRoute('/_app/dashboard')({
+  component: Dashboard,
+  loader: ({ context }) => {
+    const queryClient = context.queryClient
+    return queryClient.ensureQueryData(userRecipesQueryOptions)
+  },
+})
 
 const userRecipesQueryOptions = queryOptions({
   queryKey: ['recipes'],
   queryFn: () => $getUserRecipes(),
 })
 
-export const Route = createFileRoute('/_app/dashboard')({
-  component: Dashboard,
-  loader: ({ context }) => {
-    const queryClient = context.queryClient
+function useCreateRecipe() {
+  const navigate = useNavigate()
 
-    return queryClient.ensureQueryData(userRecipesQueryOptions)
-  },
-})
+  return useMutation({
+    mutationFn: ({ title }: { title: string }) => $createRecipe({ data: { title } }),
+    onError: (error) => {
+      toast.error(error.message)
+    },
+    onSuccess: (data) => {
+      navigate({ to: '/create-recipe', params: { id: data.id } })
+    },
+  })
+}
 
 function Dashboard() {
-  // const [isNewRecipeDialogOpen, setIsNewRecipeDialogOpen] = React.useState(false)
   const { data: recipes } = useSuspenseQuery(userRecipesQueryOptions)
+  const { mutate } = useCreateRecipe()
+
+  function handleCreateRecipe() {
+    mutate({ title: 'Neues Rezept' })
+  }
 
   return (
     <div className="flex flex-col">
       <div className="text-primary text-6xl font-bold">Is sich lecker!!</div>
 
-      {/* <Button onPress={() => setIsNewRecipeDialogOpen(true)}>Neues Rezept</Button> */}
+      <Button onClick={handleCreateRecipe}>Neues Rezept</Button>
       {/* <CreateRecipeDialog isOpen={isNewRecipeDialogOpen} onOpenChange={setIsNewRecipeDialogOpen} /> */}
 
       <DashboardRecipes recipes={recipes} className="my-4" />
-    </div>
-  )
-}
-
-type DashboardRecipesProps = {
-  recipes: Recipe[] | null
-  className?: string
-}
-
-export default function DashboardRecipes({ recipes, className }: DashboardRecipesProps) {
-  if (!recipes || recipes.length === 0) {
-    return (
-      <div className={cn('flex flex-col items-center justify-center py-12', className)}>
-        <p className="text-overlay-fg text-lg">Es sind noch keine Rezepte vorhanden</p>
-        <Button render={<Link to="/create-recipe" />}>Erstelle dein erstes Rezept.</Button>
-      </div>
-    )
-  }
-
-  return (
-    <div className={cn('grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3', className)}>
-      {/* {recipes.map((recipe) => (
-        <DashboardRecipe key={recipe.id} recipe={recipe} />
-      ))} */}
     </div>
   )
 }

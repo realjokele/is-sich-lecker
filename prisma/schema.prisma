@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Recipe {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -37,7 +37,7 @@ model Recipe {
 }
 
 model IngredientBase {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
@@ -57,7 +57,7 @@ model IngredientBase {
 // An ingredient can be part of several recipes, that's why we need RecipeIngredient to create
 // the relation between ingredient and recipe.
 model RecipeIngredient {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -75,7 +75,7 @@ model RecipeIngredient {
 }
 
 model Unit {
-  id          String       @id @default(cuid())
+  id          String       @id @default(uuid())
   name        String       @unique // e.g., "cup", "gram", "liter"
   conversion  Float // Conversion factor to a base unit (e.g., 1 cup = 240 ml)
   baseUnit    String // The base unit for conversion (e.g., "ml" for volume, "g" for weight)
@@ -88,7 +88,7 @@ enum IngredientSectionType {
 }
 
 model IngredientSection {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -104,7 +104,7 @@ model IngredientSection {
 }
 
 model RecipeStep {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -117,13 +117,13 @@ model RecipeStep {
 }
 
 model Category {
-  id      String   @id @default(cuid())
+  id      String   @id @default(uuid())
   name    String   @unique
   recipes Recipe[] @relation("CategoryRecipes")
 }
 
 model Rating {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -138,7 +138,7 @@ model Rating {
 }
 
 model RecipeList {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -155,7 +155,7 @@ model RecipeList {
 }
 
 model UserData {
-  id        String   @id @default(cuid())
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

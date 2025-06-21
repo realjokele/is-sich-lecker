@@ -1,7 +1,7 @@
-import { createFileRoute } from '@tanstack/react-router'
-import { authClient } from '~/lib/auth-client'
 import { useMutation } from '@tanstack/react-query'
+import { createFileRoute } from '@tanstack/react-router'
 import { Button } from '~/components/ui/button'
+import { authClient } from '~/lib/auth-client'
 
 export const Route = createFileRoute('/_auth/signup')({
   component: RouteComponent,

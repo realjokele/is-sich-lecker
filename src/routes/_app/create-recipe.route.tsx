@@ -3,6 +3,8 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { PlusIcon } from 'lucide-react'
 import React from 'react'
 import { toast } from 'sonner'
+import { AddIngredient } from '~/components/AddIngredient'
+import { AddIngredientSection } from '~/components/AddIngredientSection'
 import { ConfirmationDialog } from '~/components/ConfirmationDialog'
 import { EditableText } from '~/components/EditableText'
 import { Button } from '~/components/ui/button'
@@ -60,11 +62,11 @@ export default function CreateRecipe() {
                 Welche Zutaten werden für dein Rezept benötigt? Trage Menge, Einheit und die verwendete Zutat pro Feld
                 ein.
               </div>
-              {/* <div className="space-y-8">
-                <EditIngredientSections ingredientSections={recipe.ingredientSections} />
-                <AddIngredient defaultSectionId={defaultSectionId} />
+              <div className="space-y-8">
+                {/* <EditIngredientSections ingredientSections={recipe.ingredientSections} /> */}
+                <AddIngredient defaultSectionId={'defaultSectionId'} />
                 <AddIngredientSection />
-              </div> */}
+              </div>
             </div>
 
             <div className="flex-1">

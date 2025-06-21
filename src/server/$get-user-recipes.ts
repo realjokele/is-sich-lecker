@@ -7,11 +7,21 @@ export const $getUserRecipes = createServerFn()
   .handler(async ({ context }) => {
     const { userSession } = context
 
-    const userData = await db.userData.findUnique({
+    // Get or create UserData for the user
+    let userData = await db.userData.findUnique({
       where: {
-        userId: userSession.user.id,
+        userId: userSession.session.userId,
       },
     })
+
+    if (!userData) {
+      // Create UserData if it doesn't exist
+      userData = await db.userData.create({
+        data: {
+          userId: userSession.session.userId,
+        },
+      })
+    }
 
     return userData
   })
