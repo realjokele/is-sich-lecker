@@ -3,8 +3,8 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { toast } from 'sonner'
 import { DashboardRecipes } from '~/components/DashboardRecipes'
 import { Button } from '~/components/ui/button'
-import { $createRecipe } from '~/server/$create-recipe'
-import { $getUserRecipes } from '~/server/$get-user-recipes'
+import { $createRecipe } from '~/server/recipe/$create-recipe'
+import { $getUserRecipes } from '~/server/recipe/$get-user-recipes'
 
 export const Route = createFileRoute('/_app/dashboard')({
   component: Dashboard,
@@ -28,7 +28,7 @@ function useCreateRecipe() {
       toast.error(error.message)
     },
     onSuccess: (data) => {
-      navigate({ to: '/create-recipe', params: { id: data.id } })
+      navigate({ to: '/create-recipe/$recipeId', params: { recipeId: data.id } })
     },
   })
 }

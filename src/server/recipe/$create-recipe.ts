@@ -8,7 +8,7 @@ const CreateRecipeSchema = z.object({
   title: z.string().min(1).optional().default('Neues Rezept'),
 })
 
-export const $createRecipe = createServerFn()
+export const $createRecipe = createServerFn({ method: 'POST' })
   .middleware([requireUserMiddleware])
   .validator((data) => CreateRecipeSchema.parse(data))
   .handler(async ({ context, data }) => {

@@ -15,7 +15,7 @@ function toastError({
   }
 }
 
-export const $changeRecipeTitle = createServerFn()
+export const $changeRecipeTitle = createServerFn({ method: 'POST' })
   .middleware([requireUserMiddleware])
   .validator((data: string) => data)
   .handler(async (ctx) => {

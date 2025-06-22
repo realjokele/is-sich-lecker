@@ -2,7 +2,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { db } from '~/lib/prisma'
 import { requireUserMiddleware } from '~/middleware/auth.middleware'
 
-export const $getUserRecipes = createServerFn()
+export const $getUserRecipes = createServerFn({ method: 'GET' })
   .middleware([requireUserMiddleware])
   .handler(async ({ context }) => {
     const { userSession } = context

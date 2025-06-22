@@ -8,9 +8,10 @@ import { AddIngredientSection } from '~/components/AddIngredientSection'
 import { ConfirmationDialog } from '~/components/ConfirmationDialog'
 import { EditableText } from '~/components/EditableText'
 import { Button } from '~/components/ui/button'
-import { $changeRecipeTitle } from '~/server/$change-recipe-title'
+import { $changeRecipeTitle } from '~/server/recipe/$change-recipe-title'
+import { $deleteRecipe } from '~/server/recipe/$delete-recipe'
 
-export const Route = createFileRoute('/_app/create-recipe')({
+export const Route = createFileRoute('/_app/create-recipe/$recipeId')({
   component: CreateRecipe,
 })
 
@@ -23,14 +24,33 @@ function useChangeTitle() {
   })
 }
 
-export default function CreateRecipe() {
-  const { mutate } = useChangeTitle()
+function useDeleteRecipe() {
   const navigate = useNavigate()
+
+  return useMutation({
+    mutationFn: (id: string) => $deleteRecipe({ data: { id } }),
+    onSuccess: () => {
+      navigate({ to: '/dashboard' })
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+}
+
+export default function CreateRecipe() {
+  const { recipeId } = Route.useParams()
+  const { mutate } = useChangeTitle()
+  const { mutate: deleteRecipe } = useDeleteRecipe()
   const [recipeTitle, setRecipeTitle] = React.useState('')
   const [confirmationOpen, setConfirmationOpen] = React.useState(false)
 
   function handleChangeTitle(title: string) {
     mutate({ title })
+  }
+
+  function handleAbort() {
+    deleteRecipe(recipeId)
   }
 
   return (
@@ -51,7 +71,7 @@ export default function CreateRecipe() {
               <Button variant="secondary" onClick={() => setConfirmationOpen(true)}>
                 Abbrechen
               </Button>
-              <Button onClick={() => navigate({ to: '/dashboard' })}>Rezept speichern</Button>
+              <Button onClick={handleAbort}>Rezept speichern</Button>
             </div>
           </div>
 
@@ -93,7 +113,7 @@ export default function CreateRecipe() {
         cancelButtonText="Abbrechen"
         open={confirmationOpen}
         onOpenChange={setConfirmationOpen}
-        onConfirm={() => navigate({ to: '/dashboard' })}
+        onConfirm={handleAbort}
       />
     </div>
   )
