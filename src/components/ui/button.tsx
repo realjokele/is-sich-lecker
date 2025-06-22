@@ -1,4 +1,5 @@
 import { mergeProps, useRender } from '@base-ui-components/react'
+import { LoaderIcon } from 'lucide-react'
 import type { ButtonHTMLAttributes } from 'react'
 
 import { type VariantProps, tv } from 'tailwind-variants'
@@ -37,17 +38,34 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
   ButtonVariantProps & {
     className?: string
     render?: useRender.RenderProp
+    /** Shows a loading spinner and disables the button */
+    pending?: boolean
+    preIcon?: React.ReactNode
   }
 
 export function Button(props: ButtonProps) {
-  const { className, children, variant, size, render = <button />, ...otherProps } = props
+  const { className, children, variant, size, pending, preIcon, render = <button />, ...otherProps } = props
 
   const buttonClassName = cn(buttonVariants({ variant, size }), className)
+
+  const buttonContent = (
+    <span className="flex items-center gap-2">
+      {pending && (
+        <>
+          <LoaderIcon className="animate-spin" />
+          <span className="sr-only">Loading...</span>
+        </>
+      )}
+      {preIcon && !pending && preIcon}
+      {children}
+    </span>
+  )
 
   const defaultProps: useRender.ElementProps<'button'> = {
     className: buttonClassName,
     type: 'button',
-    children,
+    children: buttonContent,
+    disabled: pending,
   }
 
   return useRender({

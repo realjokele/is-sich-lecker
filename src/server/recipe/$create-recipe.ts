@@ -41,5 +41,9 @@ export const $createRecipe = createServerFn({ method: 'POST' })
     } catch (error) {
       throw new Error(error instanceof Error ? error.message : 'Failed to create recipe')
     }
+
+    // Add a 10 second delay
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+
     return { id }
   })
