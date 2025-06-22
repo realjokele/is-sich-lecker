@@ -41,6 +41,7 @@ function Dashboard() {
   const [createRecipe, setCreateRecipe] = React.useState(false)
 
   function handleCreateRecipe() {
+    setCreateRecipe(true)
     mutate({ title: 'Neues Rezept' })
   }
 
@@ -48,8 +49,8 @@ function Dashboard() {
     <div className="flex flex-col">
       <div className="text-primary text-6xl font-bold">Is sich lecker!!</div>
 
-      <Button onClick={handleCreateRecipe} pending={isPending} preIcon={<PlusIcon className="h-4 w-4" />}>
-        {isPending ? 'Erstelle neues Rezept...' : 'Neues Rezept'}
+      <Button onClick={handleCreateRecipe} pending={createRecipe} preIcon={<PlusIcon className="h-4 w-4" />}>
+        {createRecipe ? 'Erstelle neues Rezept...' : 'Neues Rezept'}
       </Button>
 
       <DashboardRecipes recipes={recipes} className="my-4" />
