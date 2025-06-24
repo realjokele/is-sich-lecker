@@ -1,126 +1,125 @@
-import * as React from "react"
-import { Menu as BaseMenu } from "@base-ui-components/react/menu"
-import { CheckIcon, ChevronRightIcon } from "lucide-react"
+import { Menu as BaseMenu } from '@base-ui-components/react/menu'
+import { CheckIcon, ChevronRightIcon } from 'lucide-react'
+import type * as React from 'react'
 
-import { cn } from "~/utils/cn"
+import { cn } from '~/utils/cn'
 
 const Menu = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
-    return <div {...props}></div>
+  return <div {...props} />
 }
 
-
-interface MenuContentProps
-	extends React.ComponentProps<typeof BaseMenu.Popup> {
-	align?: BaseMenu.Positioner.Props["align"]
-	sideOffset?: BaseMenu.Positioner.Props["sideOffset"]
-    showArrow?: boolean
+interface MenuContentProps extends React.ComponentProps<typeof BaseMenu.Popup> {
+  align?: BaseMenu.Positioner.Props['align']
+  sideOffset?: BaseMenu.Positioner.Props['sideOffset']
+  showArrow?: boolean
 }
 
-const MenuContent = ({ className, align = "center", showArrow, sideOffset = 4, ref, ...props } : MenuContentProps) => {
-    return(
-		<BaseMenu.Portal>
-			<BaseMenu.Positioner sideOffset={sideOffset} align={align}>
-                {showArrow && <ArrowSvg />}
-				<BaseMenu.Popup
-					ref={ref}
-					className={cn(
-						"min-w-48 origin-[var(--transform-origin)] rounded-md border bg-popover p-1 text-popover-foreground shadow-sm outline-none transition-[transform,scale,opacity] data-[ending-style]:scale-95 data-[starting-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0 dark:shadow-none",
-						className
-					)}
-					{...props}
-				/>
-			</BaseMenu.Positioner>
-		</BaseMenu.Portal>
-    )
-}
-
-const MenuItem = ({ className, ref, ...props } : React.ComponentProps<typeof BaseMenu.Item>) => {
-    return (
-        <BaseMenu.Item
-            ref={ref}
-            className={cn(
-                "flex select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
-                className
-            )}
-            {...props}
+const MenuContent = ({ className, align = 'center', showArrow, sideOffset = 4, ref, ...props }: MenuContentProps) => {
+  return (
+    <BaseMenu.Portal>
+      <BaseMenu.Positioner sideOffset={sideOffset} align={align}>
+        {showArrow && <ArrowSvg />}
+        <BaseMenu.Popup
+          ref={ref}
+          className={cn(
+            'min-w-48 origin-[var(--transform-origin)] rounded-md border bg-popover p-1 text-popover-foreground shadow-sm outline-none transition-[transform,scale,opacity] data-[ending-style]:scale-95 data-[starting-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0 dark:shadow-none',
+            className,
+          )}
+          {...props}
         />
-    )
+      </BaseMenu.Positioner>
+    </BaseMenu.Portal>
+  )
 }
 
-const MenuSeparator = ({ className, ref, ...props } : React.ComponentProps<typeof BaseMenu.Separator>) => {
-    return (
-        <BaseMenu.Separator
-            ref={ref}
-            className={cn("bg-border -mx-1 my-1 h-px", className)}
-            {...props}
-        />
-    )
+const MenuItem = ({ className, ref, ...props }: React.ComponentProps<typeof BaseMenu.Item>) => {
+  return (
+    <BaseMenu.Item
+      ref={ref}
+      className={cn(
+        'flex select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+        className,
+      )}
+      {...props}
+    />
+  )
 }
 
-const MenuGroupLabel = ({ className, ref, ...props } : React.ComponentProps<typeof BaseMenu.GroupLabel>) => {
-    return (
-        <BaseMenu.GroupLabel
-            ref={ref}
-            className={cn("px-2 py-1.5 text-xs text-muted-foreground", className)}
-            {...props}
-        />
-    )
+const MenuSeparator = ({ className, ref, ...props }: React.ComponentProps<typeof BaseMenu.Separator>) => {
+  return <BaseMenu.Separator ref={ref} className={cn('bg-border -mx-1 my-1 h-px', className)} {...props} />
 }
 
-const MenuCheckboxItem = ({ className, children, ref, ...props } : React.ComponentProps<typeof BaseMenu.CheckboxItem>) => {
-    return (
-        <BaseMenu.CheckboxItem
-            ref={ref}
-            className={cn(
-                "flex select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:opacity-50",
-                className
-            )}
-            {...props}
-        >
-            <div className="size-4">
-                <BaseMenu.CheckboxItemIndicator>
-                    <CheckIcon className="size-full" />
-                </BaseMenu.CheckboxItemIndicator>
-            </div>
-            <span>{children}</span>
-        </BaseMenu.CheckboxItem>
-    )
+const MenuGroupLabel = ({ className, ref, ...props }: React.ComponentProps<typeof BaseMenu.GroupLabel>) => {
+  return (
+    <BaseMenu.GroupLabel ref={ref} className={cn('px-2 py-1.5 text-xs text-muted-foreground', className)} {...props} />
+  )
 }
 
-const MenuRadioItem = ({ className, children, ref, ...props } : React.ComponentProps<typeof BaseMenu.RadioItem>) => {
-    return (
-        <BaseMenu.RadioItem
-            ref={ref}
-            className={cn(
-                "flex select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:opacity-50",
-                className
-            )}
-            {...props}
-        >
-            <div className="size-4">
-                <BaseMenu.RadioItemIndicator>
-                    <CheckIcon className="size-full" />
-                </BaseMenu.RadioItemIndicator>
-            </div>
-            <span>{children}</span>
-        </BaseMenu.RadioItem>
-    )
+const MenuCheckboxItem = ({
+  className,
+  children,
+  ref,
+  ...props
+}: React.ComponentProps<typeof BaseMenu.CheckboxItem>) => {
+  return (
+    <BaseMenu.CheckboxItem
+      ref={ref}
+      className={cn(
+        'flex select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:opacity-50',
+        className,
+      )}
+      {...props}
+    >
+      <div className="size-4">
+        <BaseMenu.CheckboxItemIndicator>
+          <CheckIcon className="size-full" />
+        </BaseMenu.CheckboxItemIndicator>
+      </div>
+      <span>{children}</span>
+    </BaseMenu.CheckboxItem>
+  )
 }
 
-const MenuSubmenuTrigger = ({ className, children, ref, ...props } : React.ComponentProps<typeof BaseMenu.SubmenuTrigger>) => {
-    return (
-	<BaseMenu.SubmenuTrigger
-		ref={ref}
-		className={cn(
-			"flex select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[popup-open]:bg-accent data-[highlighted]:text-accent-foreground data-[popup-open]:text-accent-foreground data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
-			className
-		)}
-		{...props}
-	>
-		{children}
-		<ChevronRightIcon className="ml-auto size-3" />
-	</BaseMenu.SubmenuTrigger>
-)}
+const MenuRadioItem = ({ className, children, ref, ...props }: React.ComponentProps<typeof BaseMenu.RadioItem>) => {
+  return (
+    <BaseMenu.RadioItem
+      ref={ref}
+      className={cn(
+        'flex select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:opacity-50',
+        className,
+      )}
+      {...props}
+    >
+      <div className="size-4">
+        <BaseMenu.RadioItemIndicator>
+          <CheckIcon className="size-full" />
+        </BaseMenu.RadioItemIndicator>
+      </div>
+      <span>{children}</span>
+    </BaseMenu.RadioItem>
+  )
+}
+
+const MenuSubmenuTrigger = ({
+  className,
+  children,
+  ref,
+  ...props
+}: React.ComponentProps<typeof BaseMenu.SubmenuTrigger>) => {
+  return (
+    <BaseMenu.SubmenuTrigger
+      ref={ref}
+      className={cn(
+        'flex select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[popup-open]:bg-accent data-[highlighted]:text-accent-foreground data-[popup-open]:text-accent-foreground data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+        className,
+      )}
+      {...props}
+    >
+      {children}
+      <ChevronRightIcon className="ml-auto size-3" />
+    </BaseMenu.SubmenuTrigger>
+  )
+}
 
 function ArrowSvg(props: React.ComponentProps<'svg'>) {
   return (
@@ -138,9 +137,8 @@ function ArrowSvg(props: React.ComponentProps<'svg'>) {
         className="dark:fill-gray-300"
       />
     </svg>
-  );
+  )
 }
-
 
 Menu.Root = BaseMenu.Root
 Menu.Trigger = BaseMenu.Trigger
