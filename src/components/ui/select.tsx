@@ -11,7 +11,7 @@ const SelectTrigger = ({ children, className, ref, ...props }: React.ComponentPr
     <BaseSelect.Trigger
       ref={ref}
       className={cn(
-        'inline-flex h-9 min-w-64 w-auto items-center justify-between gap-3 rounded-md border border-gray-200 pr-3 pl-3.5 text-base text-gray-900 select-none hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-1 focus-visible:outline-blue-800 active:bg-gray-100 data-[popup-open]:bg-gray-100',
+        'inline-flex h-9 min-w-64 w-auto items-center justify-between gap-3 rounded-md border border-gray-200 pr-3 pl-3.5 text-base text-gray-900 select-none hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-1 focus-visible:primary active:bg-gray-100 data-[popup-open]:bg-gray-100',
 
         className,
       )}
@@ -19,7 +19,7 @@ const SelectTrigger = ({ children, className, ref, ...props }: React.ComponentPr
     >
       {children}
       <BaseSelect.Icon>
-        <ChevronsUpDownIcon />
+        <ChevronsUpDownIcon className="size-4" />
       </BaseSelect.Icon>
     </BaseSelect.Trigger>
   )
@@ -35,11 +35,17 @@ interface SelectContentProps extends React.ComponentProps<typeof BaseSelect.Popu
 
 const SelectContent = ({ children, className, positionerProps, ref, ...props }: SelectContentProps) => {
   return (
-    <BaseSelect.Positioner sideOffset={4} {...positionerProps} align="start" alignItemWithTrigger={false} className="">
+    <BaseSelect.Positioner
+      sideOffset={4}
+      {...positionerProps}
+      align="start"
+      alignItemWithTrigger={false}
+      className="w-[var(--anchor-width)] origin-[var(--transform-origin)]"
+    >
       <BaseSelect.Popup
         ref={ref}
         className={cn(
-          'min-w-[--available-width] origin-[var(--transform-origin)] overflow-y-auto overscroll-contain rounded-md border bg-popover p-1.5 text-sm text-popover-foreground shadow-sm outline-none transition-[transform,scale,opacity] data-[ending-style]:scale-95 data-[starting-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0 dark:shadow-none',
+          'overflow-y-auto overscroll-contain rounded-md border bg-popover p-1.5 text-sm text-popover-foreground shadow-sm outline-none transition-[transform,scale,opacity] data-[ending-style]:scale-95 data-[starting-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0 dark:shadow-none',
           className,
         )}
         {...props}
@@ -65,7 +71,7 @@ const SelectItem = ({ children, className, ref, ...props }: React.ComponentProps
           <CheckIcon className="size-full" />
         </BaseSelect.ItemIndicator>
       </div>
-      <BaseSelect.ItemText>{children}</BaseSelect.ItemText>
+      <BaseSelect.ItemText className="w-full">{children}</BaseSelect.ItemText>
     </BaseSelect.Item>
   )
 }
