@@ -48,11 +48,12 @@ const AuthResetPasswordRouteRoute = AuthResetPasswordRouteRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => AuthRoute,
 } as any)
-const AuthPasswordChangedRouteRoute = AuthPasswordChangedRouteRouteImport.update({
-  id: '/password-changed',
-  path: '/password-changed',
-  getParentRoute: () => AuthRoute,
-} as any)
+const AuthPasswordChangedRouteRoute =
+  AuthPasswordChangedRouteRouteImport.update({
+    id: '/password-changed',
+    path: '/password-changed',
+    getParentRoute: () => AuthRoute,
+  } as any)
 const AuthLoginRouteRoute = AuthLoginRouteRouteImport.update({
   id: '/login',
   path: '/login',
@@ -68,11 +69,12 @@ const AppDashboardRouteRoute = AppDashboardRouteRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
-const AppCreateRecipeRecipeIdRouteRoute = AppCreateRecipeRecipeIdRouteRouteImport.update({
-  id: '/create-recipe/$recipeId',
-  path: '/create-recipe/$recipeId',
-  getParentRoute: () => AppRoute,
-} as any)
+const AppCreateRecipeRecipeIdRouteRoute =
+  AppCreateRecipeRecipeIdRouteRouteImport.update({
+    id: '/create-recipe/$recipeId',
+    path: '/create-recipe/$recipeId',
+    getParentRoute: () => AppRoute,
+  } as any)
 const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
