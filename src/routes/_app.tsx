@@ -7,6 +7,9 @@ export const Route = createFileRoute('/_app')({
     if (!context.userSession?.session.id) {
       throw redirect({ to: '/login', search: { redirectTo: location.href } })
     }
+    return {
+      userSession: context.userSession,
+    }
   },
 })
 

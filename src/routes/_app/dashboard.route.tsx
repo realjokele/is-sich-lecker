@@ -1,6 +1,6 @@
 import { queryOptions, useMutation, useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { LoaderIcon, PlusIcon } from 'lucide-react'
+import { PlusIcon } from 'lucide-react'
 import React from 'react'
 import { toast } from 'sonner'
 import { DashboardRecipes } from '~/components/DashboardRecipes'
@@ -11,15 +11,17 @@ import { $getUserRecipes } from '~/server/recipe/$get-user-recipes'
 export const Route = createFileRoute('/_app/dashboard')({
   component: Dashboard,
   loader: ({ context }) => {
+    const { userSession } = context
     const queryClient = context.queryClient
-    return queryClient.ensureQueryData(userRecipesQueryOptions)
+    return queryClient.ensureQueryData(userRecipesQueryOptions(userSession.session.userId))
   },
 })
 
-const userRecipesQueryOptions = queryOptions({
-  queryKey: ['recipes'],
-  queryFn: () => $getUserRecipes(),
-})
+const userRecipesQueryOptions = (userId: string) =>
+  queryOptions({
+    queryKey: ['recipes', { userId }],
+    queryFn: () => $getUserRecipes(),
+  })
 
 function useCreateRecipe() {
   const navigate = useNavigate()
@@ -36,11 +38,14 @@ function useCreateRecipe() {
 }
 
 function Dashboard() {
-  const { data: recipes } = useSuspenseQuery(userRecipesQueryOptions)
-  const { mutate, isPending } = useCreateRecipe()
+  const { userSession } = Route.useRouteContext()
+  const { data: recipes } = useSuspenseQuery(userRecipesQueryOptions(userSession.session.userId))
+  const { mutate } = useCreateRecipe()
   const [createRecipe, setCreateRecipe] = React.useState(false)
 
   function handleCreateRecipe() {
+    // Using 'isPending' here would make the page flicker when the mutation is finished,
+    // before the navigation is initiated.
     setCreateRecipe(true)
     mutate({ title: 'Neues Rezept' })
   }

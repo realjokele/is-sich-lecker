@@ -23,5 +23,11 @@ export const $getUserRecipes = createServerFn({ method: 'GET' })
       })
     }
 
-    return userData
+    const userRecipes = await db.recipe.findMany({
+      where: {
+        userDataId: userData.id,
+      },
+    })
+
+    return userRecipes
   })

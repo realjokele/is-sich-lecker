@@ -1,10 +1,9 @@
 import z from 'zod/v4'
-import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import { Card } from '~/components/ui/card'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link, createFileRoute, useRouter } from '@tanstack/react-router'
 
-import { Input } from '~/components/ui/input'
 import { authClient } from '~/lib/auth-client'
 import { useAppForm } from '~/lib/form'
 
@@ -27,13 +26,13 @@ function Login() {
 
   return (
     <Card className="mx-auto w-full max-w-[500px] border-0 md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:border py-16 px-8">
-      <CardHeader>
-        <CardTitle>Login</CardTitle>
-      </CardHeader>
+      <Card.Header>
+        <Card.Title>Login</Card.Title>
+      </Card.Header>
 
-      <CardContent>
+      <Card.Content>
         <LoginForm redirectTo={redirectTo} />
-      </CardContent>
+      </Card.Content>
     </Card>
   )
 }

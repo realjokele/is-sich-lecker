@@ -1,4 +1,5 @@
 import type { Recipe } from '@prisma/client'
+import DashboardRecipe from '~/components/DashboardRecipe/DashboardRecipe'
 import { cn } from '~/utils/cn'
 
 type DashboardRecipesProps = {
@@ -17,9 +18,9 @@ export function DashboardRecipes({ recipes, className }: DashboardRecipesProps) 
 
   return (
     <div className={cn('grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3', className)}>
-      {/* {recipes.map((recipe) => (
-          <DashboardRecipe key={recipe.id} recipe={recipe} />
-        ))} */}
+      {recipes.map((recipe) => (
+        <DashboardRecipe key={recipe.id} recipe={recipe} />
+      ))}
     </div>
   )
 }
