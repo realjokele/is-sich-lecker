@@ -14,7 +14,14 @@ interface MenuContentProps extends React.ComponentProps<typeof BaseMenu.Popup> {
   showArrow?: boolean
 }
 
-const MenuContent = ({ className, align = 'center', showArrow, sideOffset = 4, ref, ...props }: MenuContentProps) => {
+const MenuContent = ({
+  className,
+  align = 'center',
+  showArrow,
+  sideOffset = 4,
+  ref,
+  ...props
+}: MenuContentProps) => {
   return (
     <BaseMenu.Portal>
       <BaseMenu.Positioner sideOffset={sideOffset} align={align}>
@@ -22,7 +29,7 @@ const MenuContent = ({ className, align = 'center', showArrow, sideOffset = 4, r
         <BaseMenu.Popup
           ref={ref}
           className={cn(
-            'min-w-48 origin-[var(--transform-origin)] rounded-md border bg-popover p-1 text-popover-foreground shadow-sm outline-none transition-[transform,scale,opacity] data-[ending-style]:scale-95 data-[starting-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0 dark:shadow-none',
+            'bg-popover text-popover-foreground min-w-48 origin-[var(--transform-origin)] rounded-md border p-1 shadow-sm transition-[transform,scale,opacity] outline-none data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:opacity-0 dark:shadow-none',
             className,
           )}
           {...props}
@@ -37,7 +44,7 @@ const MenuItem = ({ className, ref, ...props }: React.ComponentProps<typeof Base
     <BaseMenu.Item
       ref={ref}
       className={cn(
-        'flex select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+        'data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground flex items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
         className,
       )}
       {...props}
@@ -45,13 +52,31 @@ const MenuItem = ({ className, ref, ...props }: React.ComponentProps<typeof Base
   )
 }
 
-const MenuSeparator = ({ className, ref, ...props }: React.ComponentProps<typeof BaseMenu.Separator>) => {
-  return <BaseMenu.Separator ref={ref} className={cn('bg-border -mx-1 my-1 h-px', className)} {...props} />
+const MenuSeparator = ({
+  className,
+  ref,
+  ...props
+}: React.ComponentProps<typeof BaseMenu.Separator>) => {
+  return (
+    <BaseMenu.Separator
+      ref={ref}
+      className={cn('bg-border -mx-1 my-1 h-px', className)}
+      {...props}
+    />
+  )
 }
 
-const MenuGroupLabel = ({ className, ref, ...props }: React.ComponentProps<typeof BaseMenu.GroupLabel>) => {
+const MenuGroupLabel = ({
+  className,
+  ref,
+  ...props
+}: React.ComponentProps<typeof BaseMenu.GroupLabel>) => {
   return (
-    <BaseMenu.GroupLabel ref={ref} className={cn('px-2 py-1.5 text-xs text-muted-foreground', className)} {...props} />
+    <BaseMenu.GroupLabel
+      ref={ref}
+      className={cn('text-muted-foreground px-2 py-1.5 text-xs', className)}
+      {...props}
+    />
   )
 }
 
@@ -65,7 +90,7 @@ const MenuCheckboxItem = ({
     <BaseMenu.CheckboxItem
       ref={ref}
       className={cn(
-        'flex select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:opacity-50',
+        'data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground flex items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
         className,
       )}
       {...props}
@@ -80,12 +105,17 @@ const MenuCheckboxItem = ({
   )
 }
 
-const MenuRadioItem = ({ className, children, ref, ...props }: React.ComponentProps<typeof BaseMenu.RadioItem>) => {
+const MenuRadioItem = ({
+  className,
+  children,
+  ref,
+  ...props
+}: React.ComponentProps<typeof BaseMenu.RadioItem>) => {
   return (
     <BaseMenu.RadioItem
       ref={ref}
       className={cn(
-        'flex select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[disabled]:opacity-50',
+        'data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground flex items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
         className,
       )}
       {...props}
@@ -110,7 +140,7 @@ const MenuSubmenuTrigger = ({
     <BaseMenu.SubmenuTrigger
       ref={ref}
       className={cn(
-        'flex select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[highlighted]:bg-accent data-[popup-open]:bg-accent data-[highlighted]:text-accent-foreground data-[popup-open]:text-accent-foreground data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+        'data-[highlighted]:bg-accent data-[popup-open]:bg-accent data-[highlighted]:text-accent-foreground data-[popup-open]:text-accent-foreground flex items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
         className,
       )}
       {...props}

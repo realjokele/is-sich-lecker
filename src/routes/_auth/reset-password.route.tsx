@@ -46,7 +46,7 @@ export const Route = createFileRoute('/_auth/reset-password')({
 
 function ResetPassword() {
   return (
-    <Card className="mx-auto w-full max-w-[500px] border-0 md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:border [--card-spacing:24px] py-16 px-8">
+    <Card className="mx-auto w-full max-w-[500px] border-0 px-8 py-16 [--card-spacing:24px] md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:border">
       <Card.Header>
         <Card.Title>Change password</Card.Title>
       </Card.Header>
@@ -80,7 +80,11 @@ function ResetPasswordForm() {
     validators: {
       onSubmit: resetPasswordSchema.and(tokenSchema),
     },
-    onSubmit: ({ value }: { value: { newPassword: string; confirmPassword: string; token: string } }) => {
+    onSubmit: ({
+      value,
+    }: {
+      value: { newPassword: string; confirmPassword: string; token: string }
+    }) => {
       mutate({ newPassword: value.newPassword, confirmPassword: value.confirmPassword, token })
     },
   })
@@ -106,11 +110,15 @@ function ResetPasswordForm() {
       <div className="space-y-4 md:space-y-8">
         <form.AppField
           name="newPassword"
-          children={(field) => <field.TextField label="New Password" isRevealable type="password" />}
+          children={(field) => (
+            <field.TextField label="New Password" isRevealable type="password" />
+          )}
         />
         <form.AppField
           name="confirmPassword"
-          children={(field) => <field.TextField label="Confirm Password" isRevealable type="password" />}
+          children={(field) => (
+            <field.TextField label="Confirm Password" isRevealable type="password" />
+          )}
         />
         <form.AppForm>
           <form.SubmitButton className="w-full">Save</form.SubmitButton>

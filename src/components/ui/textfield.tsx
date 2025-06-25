@@ -20,7 +20,7 @@ export function TextField({ type, label, errorMessage, invalid, ...props }: Text
   }
 
   return (
-    <Field.Root className={cn('w-full flex flex-col gap-1 group')} invalid={invalid}>
+    <Field.Root className={cn('group flex w-full flex-col gap-1')} invalid={invalid}>
       <Field.Label>{label}</Field.Label>
       <div className="relative">
         <Input

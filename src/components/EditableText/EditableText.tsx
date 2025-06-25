@@ -14,7 +14,13 @@ type EditableTextProps = {
   placeholder?: string
 }
 
-export function EditableText({ fieldName, value, onChangeValue, className, placeholder }: EditableTextProps) {
+export function EditableText({
+  fieldName,
+  value,
+  onChangeValue,
+  className,
+  placeholder,
+}: EditableTextProps) {
   const [isEditing, setIsEditing] = React.useState(false)
   const inputRef = React.useRef<HTMLInputElement>(null)
   const buttonRef = React.useRef<HTMLButtonElement>(null)

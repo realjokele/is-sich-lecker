@@ -19,7 +19,7 @@ export const Route = createFileRoute('/_auth/forgot-password')({
 
 export default function ForgotPassword() {
   return (
-    <Card className="mx-auto w-full max-w-[500px] border-0 md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:border [--card-spacing:24px] py-16 px-8">
+    <Card className="mx-auto w-full max-w-[500px] border-0 px-8 py-16 [--card-spacing:24px] md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:border">
       <Card.Header>
         <Card.Title>Forgot password</Card.Title>
         <Card.Description>
@@ -73,7 +73,10 @@ function ForgotPasswordForm() {
         }}
       >
         <div className="space-y-4 md:space-y-8">
-          <form.AppField name="username" children={(field) => <field.TextField label="Username" />} />
+          <form.AppField
+            name="username"
+            children={(field) => <field.TextField label="Username" />}
+          />
 
           <form.AppForm>
             <form.SubmitButton className="w-full">Send code</form.SubmitButton>

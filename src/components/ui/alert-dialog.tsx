@@ -15,12 +15,15 @@ const AlertDialogPortal = ({ ...props }: React.ComponentProps<typeof BaseAlertDi
   return <BaseAlertDialog.Portal data-slot="alert-dialog-portal" {...props} />
 }
 
-const AlertDialogBackdrop = ({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Backdrop>) => {
+const AlertDialogBackdrop = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof BaseAlertDialog.Backdrop>) => {
   return (
     <BaseAlertDialog.Backdrop
       data-slot="alert-dialog-backdrop"
       className={cn(
-        'duration-250 data-[open]:animate-in data-[ending-style]:animate-out data-[ending-style]:fade-out-0 data-[open]:fade-in-0 fixed inset-0 z-50 bg-black/40',
+        'data-[open]:animate-in data-[ending-style]:animate-out data-[ending-style]:fade-out-0 data-[open]:fade-in-0 fixed inset-0 z-50 bg-black/40 duration-250',
         className,
       )}
       {...props}
@@ -28,7 +31,10 @@ const AlertDialogBackdrop = ({ className, ...props }: React.ComponentProps<typeo
   )
 }
 
-const AlertDialogPopup = ({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Popup>) => {
+const AlertDialogPopup = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof BaseAlertDialog.Popup>) => {
   return (
     <AlertDialogPortal>
       <AlertDialogBackdrop />
@@ -37,7 +43,7 @@ const AlertDialogPopup = ({ className, ...props }: React.ComponentProps<typeof B
         className={cn(
           'bg-background fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg',
           'data-[open]:animate-in data-[open]:fade-in-0 data-[open]:zoom-in-95',
-          'data-[ending-style]:animate-out data-[ending-style]:fade-out-0 data-[ending-style]:zoom-out-95 ',
+          'data-[ending-style]:animate-out data-[ending-style]:fade-out-0 data-[ending-style]:zoom-out-95',
           className,
         )}
         {...props}
@@ -66,7 +72,10 @@ const AlertDialogFooter = ({ className, ...props }: React.ComponentProps<'div'>)
   )
 }
 
-const AlertDialogTitle = ({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Title>) => {
+const AlertDialogTitle = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof BaseAlertDialog.Title>) => {
   return (
     <BaseAlertDialog.Title
       data-slot="alert-dialog-title"
@@ -76,7 +85,10 @@ const AlertDialogTitle = ({ className, ...props }: React.ComponentProps<typeof B
   )
 }
 
-const AlertDialogDescription = ({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Description>) => {
+const AlertDialogDescription = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof BaseAlertDialog.Description>) => {
   return (
     <BaseAlertDialog.Description
       data-slot="alert-dialog-description"
@@ -86,7 +98,10 @@ const AlertDialogDescription = ({ className, ...props }: React.ComponentProps<ty
   )
 }
 
-const AlertDialogClose = ({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Close>) => {
+const AlertDialogClose = ({
+  className,
+  ...props
+}: React.ComponentProps<typeof BaseAlertDialog.Close>) => {
   return <BaseAlertDialog.Close className={className} {...props} />
 }
 

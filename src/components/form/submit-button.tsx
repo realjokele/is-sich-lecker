@@ -5,7 +5,13 @@ type SubmitButtonProps = ButtonProps & {
   isSubmitting?: boolean
 }
 
-export function SubmitButton({ isSubmitting, type = 'submit', disabled, className, ...props }: SubmitButtonProps) {
+export function SubmitButton({
+  isSubmitting,
+  type = 'submit',
+  disabled,
+  className,
+  ...props
+}: SubmitButtonProps) {
   const form = useFormContext()
 
   return (

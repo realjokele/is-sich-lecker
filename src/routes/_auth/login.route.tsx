@@ -25,7 +25,7 @@ function Login() {
   const { redirectTo } = Route.useSearch()
 
   return (
-    <Card className="mx-auto w-full max-w-[500px] border-0 md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:border py-16 px-8">
+    <Card className="mx-auto w-full max-w-[500px] border-0 px-8 py-16 md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:border">
       <Card.Header>
         <Card.Title>Login</Card.Title>
       </Card.Header>
@@ -84,10 +84,16 @@ function LoginForm({ redirectTo }: { redirectTo: string | undefined }) {
         <div className="space-y-4 md:space-y-8">
           {data?.error && <div className="text-danger w-full text-center">Invalid credentials</div>}
 
-          <form.AppField name="username" children={(field) => <field.TextField label="Username" />} />
+          <form.AppField
+            name="username"
+            children={(field) => <field.TextField label="Username" />}
+          />
 
           <div className="w-full space-y-2">
-            <form.AppField name="password" children={(field) => <field.TextField label="Password" type="password" />} />
+            <form.AppField
+              name="password"
+              children={(field) => <field.TextField label="Password" type="password" />}
+            />
             <Link to="/forgot-password">Passwort vergessen?</Link>
           </div>
           <form.AppForm>

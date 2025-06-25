@@ -16,17 +16,17 @@ const RadioGroupItem = ({ className, id, label, ref, ...props }: RadioGroupItemP
   id = id ?? generatedId
 
   return (
-    <div className={cn('flex gap-2 items-center', className)}>
+    <div className={cn('flex items-center gap-2', className)}>
       <Radio.Root
         id={id}
         ref={ref}
         className={cn(
-          'peer flex size-4 items-center justify-center rounded-full border focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[checked]:border-primary',
+          'peer focus-visible:ring-ring data-[checked]:border-primary flex size-4 items-center justify-center rounded-full border focus-visible:ring-1 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
           className,
         )}
         {...props}
       >
-        <Radio.Indicator className="flex before:size-2.5 before:rounded-full before:bg-primary data-[unchecked]:hidden" />
+        <Radio.Indicator className="before:bg-primary flex before:size-2.5 before:rounded-full data-[unchecked]:hidden" />
       </Radio.Root>
       <label htmlFor={id}>{label}</label>
     </div>

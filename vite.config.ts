@@ -8,6 +8,8 @@ export default defineConfig({
   plugins: [
     tsconfigPaths(),
     tailwindcss(),
-    tanstackStart({ /** Add your options here */ })
-  ]
+    tanstackStart({
+      /** Add your options here */
+    }),
+  ],
 })

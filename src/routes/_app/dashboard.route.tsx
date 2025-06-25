@@ -54,7 +54,11 @@ function Dashboard() {
     <div className="flex flex-col">
       <div className="text-primary text-6xl font-bold">Is sich lecker!!</div>
 
-      <Button onClick={handleCreateRecipe} pending={createRecipe} preIcon={<PlusIcon className="h-4 w-4" />}>
+      <Button
+        onClick={handleCreateRecipe}
+        pending={createRecipe}
+        preIcon={<PlusIcon className="h-4 w-4" />}
+      >
         {createRecipe ? 'Erstelle neues Rezept...' : 'Neues Rezept'}
       </Button>
 

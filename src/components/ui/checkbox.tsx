@@ -1,4 +1,8 @@
-import { Checkbox as BaseCheckbox, CheckboxGroup as BaseCheckboxGroup, Field } from '@base-ui-components/react'
+import {
+  Checkbox as BaseCheckbox,
+  CheckboxGroup as BaseCheckboxGroup,
+  Field,
+} from '@base-ui-components/react'
 
 import { CheckIcon, MinusIcon } from 'lucide-react'
 import type * as React from 'react'
@@ -11,17 +15,21 @@ interface CheckboxProps extends React.ComponentProps<typeof BaseCheckbox.Root> {
 
 const Checkbox = ({ className, label, ref, ...props }: CheckboxProps) => {
   return (
-    <Field.Root className={cn('flex gap-2 items-center', className)}>
+    <Field.Root className={cn('flex items-center gap-2', className)}>
       <BaseCheckbox.Root
         ref={ref}
         className={cn(
-          'peer flex size-4 shrink-0 items-center justify-center rounded-sm border bg-input outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 aria-[invalid=true]:border-destructive aria-[invalid=true]:text-destructive aria-[invalid=true]:focus:ring-destructive data-[checked]:border-primary data-[checked]:bg-primary data-[checked]:text-primary-foreground data-[indeterminate]:text-foreground',
+          'peer bg-input focus-visible:ring-ring aria-[invalid=true]:border-destructive aria-[invalid=true]:text-destructive aria-[invalid=true]:focus:ring-destructive data-[checked]:border-primary data-[checked]:bg-primary data-[checked]:text-primary-foreground data-[indeterminate]:text-foreground flex size-4 shrink-0 items-center justify-center rounded-sm border outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50',
           className,
         )}
         {...props}
       >
         <BaseCheckbox.Indicator className="block data-[unchecked]:hidden">
-          {props.indeterminate ? <MinusIcon className="size-3" /> : <CheckIcon className="size-3" />}
+          {props.indeterminate ? (
+            <MinusIcon className="size-3" />
+          ) : (
+            <CheckIcon className="size-3" />
+          )}
         </BaseCheckbox.Indicator>
       </BaseCheckbox.Root>
       <Field.Label>{label}</Field.Label>
@@ -29,8 +37,18 @@ const Checkbox = ({ className, label, ref, ...props }: CheckboxProps) => {
   )
 }
 
-const CheckboxGroup = ({ className, ref, ...props }: React.ComponentProps<typeof BaseCheckboxGroup>) => {
-  return <BaseCheckboxGroup ref={ref} className={cn('flex flex-col items-start gap-1', className)} {...props} />
+const CheckboxGroup = ({
+  className,
+  ref,
+  ...props
+}: React.ComponentProps<typeof BaseCheckboxGroup>) => {
+  return (
+    <BaseCheckboxGroup
+      ref={ref}
+      className={cn('flex flex-col items-start gap-1', className)}
+      {...props}
+    />
+  )
 }
 
 export { Checkbox, CheckboxGroup }

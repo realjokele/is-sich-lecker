@@ -1,6 +1,13 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { HeadContent, Link, Outlet, Scripts, createRootRouteWithContext, useRouter } from '@tanstack/react-router'
+import {
+  HeadContent,
+  Link,
+  Outlet,
+  Scripts,
+  createRootRouteWithContext,
+  useRouter,
+} from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { createServerFn } from '@tanstack/react-start'
 import type { Session, User } from 'better-auth'
@@ -120,7 +127,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="">
-        <div className="p-2 flex gap-2 text-lg isolate">
+        <div className="isolate flex gap-2 p-2 text-lg">
           <Link
             to="/"
             activeProps={{

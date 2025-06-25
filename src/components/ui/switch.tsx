@@ -12,7 +12,7 @@ const Switch = ({ className, id, label, children, ref, ...props }: SwitchProps) 
   id = id ?? generatedId
 
   return (
-    <div className={cn('flex space-x-2 items-center', className)}>
+    <div className={cn('flex items-center space-x-2', className)}>
       <BaseSwitch.Root
         data-slot="switch"
         id={id}

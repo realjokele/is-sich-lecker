@@ -1,4 +1,11 @@
-import { ChevronsRight, ChevronsUp, CircleCheck, CircleUserRound, LoaderCircle, Minus } from 'lucide-react'
+import {
+  ChevronsRight,
+  ChevronsUp,
+  CircleCheck,
+  CircleUserRound,
+  LoaderCircle,
+  Minus,
+} from 'lucide-react'
 
 import { Link } from '@tanstack/react-router'
 import { useState } from 'react'
@@ -42,7 +49,9 @@ export default function DashboardRecipe({ recipe }: DashboardRecipeProps) {
       <Card className="h-full transition-transform hover:scale-[1.02]">
         <Card.Header>
           <Card.Title>{recipe.title}</Card.Title>
-          {recipe.description && <Card.Description className="line-clamp-2">{recipe.description}</Card.Description>}
+          {recipe.description && (
+            <Card.Description className="line-clamp-2">{recipe.description}</Card.Description>
+          )}
         </Card.Header>
         <Card.Content>
           <div className="flex flex-wrap gap-4">
