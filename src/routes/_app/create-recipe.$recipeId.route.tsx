@@ -10,6 +10,7 @@ import { EditableText } from '~/components/EditableText'
 import { Button } from '~/components/ui/button'
 import { $changeRecipeTitle } from '~/server/recipe/$change-recipe-title'
 import { $deleteRecipe } from '~/server/recipe/$delete-recipe'
+import { $saveRecipe } from '~/server/recipe/$save-recipe'
 
 export const Route = createFileRoute('/_app/create-recipe/$recipeId')({
   component: CreateRecipe,
@@ -38,19 +39,38 @@ function useDeleteRecipe() {
   })
 }
 
+type SaveRecipeData = {
+  recipeId: string
+  title: string
+}
+
+function useSaveRecipe() {
+  const navigate = useNavigate()
+
+  return useMutation({
+    mutationFn: ({ recipeId, title }: SaveRecipeData) => $saveRecipe({ data: { recipeId, title } }),
+    onError: (error) => {
+      toast.error(error.message)
+    },
+    onSuccess: () => {
+      navigate({ to: '/dashboard' })
+    },
+  })
+}
+
 export default function CreateRecipe() {
   const { recipeId } = Route.useParams()
-  const { mutate } = useChangeTitle()
   const { mutate: deleteRecipe } = useDeleteRecipe()
+  const { mutate: saveRecipe } = useSaveRecipe()
   const [recipeTitle, setRecipeTitle] = React.useState('')
   const [confirmationOpen, setConfirmationOpen] = React.useState(false)
 
-  function handleChangeTitle(title: string) {
-    mutate({ title })
-  }
-
   function handleAbort() {
     deleteRecipe(recipeId)
+  }
+
+  function handleSaveRecipe() {
+    saveRecipe({ recipeId, title: recipeTitle })
   }
 
   return (
@@ -71,7 +91,7 @@ export default function CreateRecipe() {
               <Button variant="secondary" onClick={() => setConfirmationOpen(true)}>
                 Abbrechen
               </Button>
-              <Button onClick={handleAbort}>Rezept speichern</Button>
+              <Button onClick={handleSaveRecipe}>Rezept speichern</Button>
             </div>
           </div>
 

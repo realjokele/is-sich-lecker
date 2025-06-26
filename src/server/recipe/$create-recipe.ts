@@ -43,7 +43,7 @@ export const $createRecipe = createServerFn({ method: 'POST' })
     }
 
     // Add a 10 second delay
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    // await new Promise((resolve) => setTimeout(resolve, 1000))
 
     return { id }
   })
