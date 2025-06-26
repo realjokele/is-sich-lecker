@@ -1,15 +1,20 @@
 import {
   ChevronsRight,
   ChevronsUp,
-  CircleCheck,
   CircleUserRound,
+  EllipsisVerticalIcon,
   LoaderCircle,
   Minus,
 } from 'lucide-react'
 
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Card } from '~/components/ui/card'
+import { Menu } from '~/components/ui/menu'
+import { $deleteRecipe } from '~/server/recipe/$delete-recipe'
+import { ConfirmationDialog } from '../ConfirmationDialog'
+import { Button } from '../ui/button'
 // import { AlertDeleteDialog } from '#/components/AlertDeleteDialog/alert-delete-dialog'
 // import { RecipeMenu } from './recipe-menu'
 
@@ -33,20 +38,30 @@ type DashboardRecipeProps = {
   recipe: RecipeWithCounts
 }
 
+function useDeleteRecipe() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: ({ recipeId }: { recipeId: string }) => $deleteRecipe({ data: { recipeId } }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['recipes'] })
+    },
+  })
+}
+
 export default function DashboardRecipe({ recipe }: DashboardRecipeProps) {
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const { mutate: deleteRecipe } = useDeleteRecipe()
   const totalTime = (recipe.preparationTime || 0) + (recipe.cookingTime || 0)
 
   const handleDelete = () => {
-    const formData = new FormData()
-    formData.append('id', recipe.id)
-    // fetcher.submit(formData, { method: 'post' })
+    deleteRecipe({ recipeId: recipe.id })
   }
 
   return (
     <div className="relative">
       {/* <Link to={href('/edit-recipe/:id', { id: recipe.id })} className="block"> */}
-      <Card className="h-full transition-transform hover:scale-[1.02]">
+      <Card className="h-full">
         <Card.Header>
           <Card.Title>{recipe.title}</Card.Title>
           {recipe.description && (
@@ -91,23 +106,30 @@ export default function DashboardRecipe({ recipe }: DashboardRecipeProps) {
             )} */}
           </div>
           <Card.Footer>
-            {/* <button onClick={(e) => e.preventDefault()}>
-              <RecipeMenu onDelete={() => setIsDeleteDialogOpen(true)} />
-            </button> */}
+            <Menu.Root>
+              <Menu.Trigger>
+                <Button variant="ghost" size="icon">
+                  <EllipsisVerticalIcon />
+                </Button>
+                <Menu.Content>
+                  <Menu.Item onClick={() => setConfirmDelete(true)}>Rezept löschen</Menu.Item>
+                </Menu.Content>
+              </Menu.Trigger>
+            </Menu.Root>
           </Card.Footer>
         </Card.Content>
       </Card>
       {/* </Link> */}
 
-      {/* <AlertDeleteDialog
+      <ConfirmationDialog
+        onConfirm={handleDelete}
+        open={confirmDelete}
+        onOpenChange={setConfirmDelete}
         title="Rezept löschen"
-        message={`Möchtest du "${recipe.title}" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.`}
-        onDelete={handleDelete}
-        okay="Löschen"
-        cancel="Abbrechen"
-        isOpen={isDeleteDialogOpen}
-        onOpenChange={setIsDeleteDialogOpen}
-      /> */}
+        confirmButtonText="Löschen"
+        cancelButtonText="Abbrechen"
+        description={`Möchtest du "${recipe.title}" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.`}
+      />
     </div>
   )
 }

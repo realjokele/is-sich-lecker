@@ -12,13 +12,14 @@ export const $saveRecipe = createServerFn()
   .middleware([requireUserMiddleware])
   .validator((data) => SaveRecipeSchema.parse(data))
   .handler(async ({ data }) => {
+    const { recipeId, title } = data
     try {
       await db.recipe.update({
         where: {
-          id: data.recipeId,
+          id: recipeId,
         },
         data: {
-          title: data.title,
+          title,
         },
       })
     } catch (error) {

@@ -4,7 +4,7 @@ import { db } from '~/lib/prisma'
 import { requireUserMiddleware } from '~/middleware/auth.middleware'
 
 const DeleteRecipeSchema = z.object({
-  id: z.string(),
+  recipeId: z.string(),
 })
 
 export const $deleteRecipe = createServerFn({ method: 'POST' })
@@ -12,7 +12,7 @@ export const $deleteRecipe = createServerFn({ method: 'POST' })
   .validator((data) => DeleteRecipeSchema.parse(data))
   .handler(async ({ context, data }) => {
     const { userSession } = context
-    const { id } = data
+    const { recipeId } = data
 
     try {
       const userData = await db.userData.findUnique({
@@ -27,7 +27,7 @@ export const $deleteRecipe = createServerFn({ method: 'POST' })
 
       await db.recipe.delete({
         where: {
-          id,
+          id: recipeId,
           userDataId: userData.id,
         },
       })

@@ -31,7 +31,10 @@ export function ConfirmationDialog({
           <AlertDialog.Close className={buttonVariants({ variant: 'outline' })}>
             {cancelButtonText}
           </AlertDialog.Close>
-          <AlertDialog.Close className={buttonVariants({ variant: 'default' })} onClick={onConfirm}>
+          <AlertDialog.Close
+            className={buttonVariants({ variant: 'destructive' })}
+            onClick={onConfirm}
+          >
             {confirmButtonText}
           </AlertDialog.Close>
         </AlertDialog.Footer>
