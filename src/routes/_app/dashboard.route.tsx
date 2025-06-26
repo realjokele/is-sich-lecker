@@ -32,7 +32,7 @@ function useCreateRecipe() {
       toast.error(error.message)
     },
     onSuccess: (data) => {
-      navigate({ to: '/create-recipe/$recipeId', params: { recipeId: data.id } })
+      navigate({ to: '/edit-recipe/$recipeId', params: { recipeId: data.id } })
     },
   })
 }

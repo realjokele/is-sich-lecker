@@ -20,7 +20,7 @@ import { Route as AuthPasswordChangedRouteRouteImport } from './routes/_auth/pas
 import { Route as AuthLoginRouteRouteImport } from './routes/_auth/login.route'
 import { Route as AuthForgotPasswordRouteRouteImport } from './routes/_auth/forgot-password.route'
 import { Route as AppDashboardRouteRouteImport } from './routes/_app/dashboard.route'
-import { Route as AppCreateRecipeRecipeIdRouteRouteImport } from './routes/_app/create-recipe.$recipeId.route'
+import { Route as AppEditRecipeRecipeIdRouteRouteImport } from './routes/_app/edit-recipe.$recipeId.route'
 import { ServerRoute as ApiAuthSplatServerRouteImport } from './routes/api/auth/$'
 
 const rootServerRouteImport = createServerRootRoute()
@@ -69,10 +69,10 @@ const AppDashboardRouteRoute = AppDashboardRouteRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
-const AppCreateRecipeRecipeIdRouteRoute =
-  AppCreateRecipeRecipeIdRouteRouteImport.update({
-    id: '/create-recipe/$recipeId',
-    path: '/create-recipe/$recipeId',
+const AppEditRecipeRecipeIdRouteRoute =
+  AppEditRecipeRecipeIdRouteRouteImport.update({
+    id: '/edit-recipe/$recipeId',
+    path: '/edit-recipe/$recipeId',
     getParentRoute: () => AppRoute,
   } as any)
 const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
@@ -89,7 +89,7 @@ export interface FileRoutesByFullPath {
   '/password-changed': typeof AuthPasswordChangedRouteRoute
   '/reset-password': typeof AuthResetPasswordRouteRoute
   '/signup': typeof AuthSignupRouteRoute
-  '/create-recipe/$recipeId': typeof AppCreateRecipeRecipeIdRouteRoute
+  '/edit-recipe/$recipeId': typeof AppEditRecipeRecipeIdRouteRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRouteRoute
@@ -99,7 +99,7 @@ export interface FileRoutesByTo {
   '/password-changed': typeof AuthPasswordChangedRouteRoute
   '/reset-password': typeof AuthResetPasswordRouteRoute
   '/signup': typeof AuthSignupRouteRoute
-  '/create-recipe/$recipeId': typeof AppCreateRecipeRecipeIdRouteRoute
+  '/edit-recipe/$recipeId': typeof AppEditRecipeRecipeIdRouteRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -112,7 +112,7 @@ export interface FileRoutesById {
   '/_auth/password-changed': typeof AuthPasswordChangedRouteRoute
   '/_auth/reset-password': typeof AuthResetPasswordRouteRoute
   '/_auth/signup': typeof AuthSignupRouteRoute
-  '/_app/create-recipe/$recipeId': typeof AppCreateRecipeRecipeIdRouteRoute
+  '/_app/edit-recipe/$recipeId': typeof AppEditRecipeRecipeIdRouteRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -124,7 +124,7 @@ export interface FileRouteTypes {
     | '/password-changed'
     | '/reset-password'
     | '/signup'
-    | '/create-recipe/$recipeId'
+    | '/edit-recipe/$recipeId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -134,7 +134,7 @@ export interface FileRouteTypes {
     | '/password-changed'
     | '/reset-password'
     | '/signup'
-    | '/create-recipe/$recipeId'
+    | '/edit-recipe/$recipeId'
   id:
     | '__root__'
     | '/'
@@ -146,7 +146,7 @@ export interface FileRouteTypes {
     | '/_auth/password-changed'
     | '/_auth/reset-password'
     | '/_auth/signup'
-    | '/_app/create-recipe/$recipeId'
+    | '/_app/edit-recipe/$recipeId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -241,11 +241,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/create-recipe/$recipeId': {
-      id: '/_app/create-recipe/$recipeId'
-      path: '/create-recipe/$recipeId'
-      fullPath: '/create-recipe/$recipeId'
-      preLoaderRoute: typeof AppCreateRecipeRecipeIdRouteRouteImport
+    '/_app/edit-recipe/$recipeId': {
+      id: '/_app/edit-recipe/$recipeId'
+      path: '/edit-recipe/$recipeId'
+      fullPath: '/edit-recipe/$recipeId'
+      preLoaderRoute: typeof AppEditRecipeRecipeIdRouteRouteImport
       parentRoute: typeof AppRoute
     }
   }
@@ -264,12 +264,12 @@ declare module '@tanstack/react-start/server' {
 
 interface AppRouteChildren {
   AppDashboardRouteRoute: typeof AppDashboardRouteRoute
-  AppCreateRecipeRecipeIdRouteRoute: typeof AppCreateRecipeRecipeIdRouteRoute
+  AppEditRecipeRecipeIdRouteRoute: typeof AppEditRecipeRecipeIdRouteRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRouteRoute: AppDashboardRouteRoute,
-  AppCreateRecipeRecipeIdRouteRoute: AppCreateRecipeRecipeIdRouteRoute,
+  AppEditRecipeRecipeIdRouteRoute: AppEditRecipeRecipeIdRouteRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

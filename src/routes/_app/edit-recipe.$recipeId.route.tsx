@@ -10,10 +10,15 @@ import { EditableText } from '~/components/EditableText'
 import { Button } from '~/components/ui/button'
 import { $changeRecipeTitle } from '~/server/recipe/$change-recipe-title'
 import { $deleteRecipe } from '~/server/recipe/$delete-recipe'
+import { $getRecipe } from '~/server/recipe/$get-recipe'
 import { $saveRecipe } from '~/server/recipe/$save-recipe'
 
-export const Route = createFileRoute('/_app/create-recipe/$recipeId')({
-  component: CreateRecipe,
+export const Route = createFileRoute('/_app/edit-recipe/$recipeId')({
+  component: EditRecipe,
+  loader: async ({ params }) => {
+    const recipe = await $getRecipe({ data: { recipeId: params.recipeId } })
+    return { recipe }
+  },
 })
 
 function useChangeTitle() {
@@ -58,11 +63,12 @@ function useSaveRecipe() {
   })
 }
 
-export default function CreateRecipe() {
+export default function EditRecipe() {
+  const { recipe } = Route.useLoaderData()
   const { recipeId } = Route.useParams()
   const { mutate: deleteRecipe } = useDeleteRecipe()
   const { mutate: saveRecipe } = useSaveRecipe()
-  const [recipeTitle, setRecipeTitle] = React.useState('')
+  const [recipeTitle, setRecipeTitle] = React.useState(recipe?.title ?? '')
   const [confirmationOpen, setConfirmationOpen] = React.useState(false)
 
   function handleAbort() {
