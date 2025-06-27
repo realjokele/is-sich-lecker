@@ -4,7 +4,7 @@ import { flushSync } from 'react-dom'
 import { Check, Pencil } from 'lucide-react'
 import { cn } from '~/utils/cn'
 import { Button } from '../ui/button'
-import { Input } from '../ui/input'
+import { Input } from '../ui/field'
 
 type EditableTextProps = {
   fieldName: string
@@ -57,7 +57,7 @@ export function EditableText({
 
     return (
       <Button
-        variant="ghost"
+        intent="plain"
         className={cn(
           'min-w-[100px] py-1 pr-2 pl-0 text-left focus:outline-none',
           className,

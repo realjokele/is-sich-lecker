@@ -1,5 +1,5 @@
-import { type TextFieldProps, TextField as UITextField } from '~/components/ui/textfield'
 import { useFieldContext } from '~/lib/form'
+import { TextField as TextFieldPrimitive, type TextFieldProps } from '~/components/ui/textfield'
 
 export function TextField(props: TextFieldProps) {
   const field = useFieldContext<string>()
@@ -8,12 +8,12 @@ export function TextField(props: TextFieldProps) {
 
   return (
     <>
-      <UITextField
+      <TextFieldPrimitive
         {...props}
         value={field.state.value}
-        onChange={(e) => field.handleChange(e.target.value)}
+        onChange={field.handleChange}
         onBlur={field.handleBlur}
-        invalid={!field.state.meta.isValid}
+        isInvalid={!field.state.meta.isValid}
         errorMessage={errorMessage}
       />
     </>

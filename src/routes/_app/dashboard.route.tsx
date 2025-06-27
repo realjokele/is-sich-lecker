@@ -56,7 +56,7 @@ function Dashboard() {
 
       <Button
         onClick={handleCreateRecipe}
-        pending={createRecipe}
+        isPending={createRecipe}
         preIcon={<PlusIcon className="h-4 w-4" />}
       >
         {createRecipe ? 'Erstelle neues Rezept...' : 'Neues Rezept'}

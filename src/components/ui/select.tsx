@@ -1,134 +1,153 @@
-import { Select as BaseSelect } from '@base-ui-components/react'
-import { CheckIcon, ChevronsUpDownIcon } from 'lucide-react'
-import * as React from 'react'
+'use client'
+import {
+  DropdownDescription,
+  DropdownItem,
+  DropdownLabel,
+  DropdownSection,
+  DropdownSeparator,
+} from '@/components/ui/dropdown'
+import { Description, FieldError, Label } from '@/components/ui/field'
+import type { FieldProps } from '@/components/ui/field'
+import { PopoverContent } from '@/components/ui/popover'
+import { composeTailwindRenderProps } from '@/lib/primitive'
+import { IconChevronsY } from '@intentui/icons'
+import type {
+  ListBoxProps,
+  PopoverProps,
+  SelectProps as SelectPrimitiveProps,
+} from 'react-aria-components'
+import { Button, ListBox, Select as SelectPrimitive, SelectValue } from 'react-aria-components'
+import { twJoin } from 'tailwind-merge'
 
-import { cn } from '~/utils/cn'
+interface SelectProps<T extends object> extends SelectPrimitiveProps<T>, FieldProps {
+  items?: Iterable<T>
+}
 
-const Select = <T,>(props: BaseSelect.Root.Props<T>) => <BaseSelect.Root modal={false} {...props} />
-
-const SelectTrigger = ({
+const Select = <T extends object>({
+  label,
   children,
+  description,
+  errorMessage,
   className,
-  ref,
   ...props
-}: React.ComponentProps<typeof BaseSelect.Trigger>) => {
+}: SelectProps<T>) => {
   return (
-    <BaseSelect.Trigger
-      ref={ref}
-      className={cn(
-        "border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 inline-flex min-w-64 items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className,
-      )}
+    <SelectPrimitive
+      data-slot="select"
       {...props}
+      className={composeTailwindRenderProps(className, 'group/select flex w-full flex-col gap-y-1')}
     >
-      {children}
-      <BaseSelect.Icon>
-        <ChevronsUpDownIcon className="size-4" />
-      </BaseSelect.Icon>
-    </BaseSelect.Trigger>
+      {(values) => (
+        <>
+          {label && <Label>{label}</Label>}
+          {typeof children === 'function' ? children(values) : children}
+          {description && <Description>{description}</Description>}
+          <FieldError>{errorMessage}</FieldError>
+        </>
+      )}
+    </SelectPrimitive>
   )
 }
 
-const SelectValue = ({
-  className,
-  ref,
-  ...props
-}: React.ComponentProps<typeof BaseSelect.Value>) => {
-  return <BaseSelect.Value ref={ref} className={cn('text-sm', className)} {...props} />
+interface SelectListProps<T extends object>
+  extends Omit<ListBoxProps<T>, 'layout' | 'orientation'> {
+  items?: Iterable<T>
+  popover?: Omit<PopoverProps, 'children'>
 }
 
-interface SelectContentProps extends React.ComponentProps<typeof BaseSelect.Popup> {
-  positionerProps?: BaseSelect.Positioner.Props
-}
-
-const SelectContent = ({
-  children,
+const SelectList = <T extends object>({
+  items,
   className,
-  positionerProps,
-  ref,
+  popover,
   ...props
-}: SelectContentProps) => {
+}: SelectListProps<T>) => {
   return (
-    <BaseSelect.Positioner
-      sideOffset={4}
-      {...positionerProps}
-      align="start"
-      alignItemWithTrigger={false}
-      className="w-[var(--anchor-width)] origin-[var(--transform-origin)]"
+    <PopoverContent
+      className={composeTailwindRenderProps(
+        popover?.className,
+        'max-h-96 min-w-(--trigger-width) scroll-py-1 overflow-y-scroll overscroll-contain',
+      )}
+      {...popover}
     >
-      <BaseSelect.Popup
-        ref={ref}
-        className={cn(
-          'bg-popover text-popover-foreground overflow-y-auto overscroll-contain rounded-md border p-1.5 text-sm shadow-sm transition-[transform,scale,opacity] outline-none data-[ending-style]:scale-95 data-[ending-style]:opacity-0 data-[starting-style]:scale-95 data-[starting-style]:opacity-0 dark:shadow-none',
+      <ListBox
+        layout="stack"
+        orientation="vertical"
+        className={composeTailwindRenderProps(
           className,
+          "grid w-full grid-cols-[auto_1fr] flex-col gap-y-1 p-1 outline-hidden *:[[role='group']+[role=group]]:mt-4 *:[[role='group']+[role=separator]]:mt-1",
         )}
+        items={items}
         {...props}
-      >
-        {children}
-      </BaseSelect.Popup>
-    </BaseSelect.Positioner>
+      />
+    </PopoverContent>
   )
 }
 
-const SelectItem = ({
-  children,
-  className,
-  ref,
-  ...props
-}: React.ComponentProps<typeof BaseSelect.Item>) => {
+interface SelectTriggerProps extends React.ComponentProps<typeof Button> {
+  prefix?: React.ReactNode
+  className?: string
+}
+
+const SelectTrigger = ({ children, className, ...props }: SelectTriggerProps) => {
   return (
-    <BaseSelect.Item
-      ref={ref}
-      className={cn(
-        'data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground flex items-center gap-2 rounded-md px-4 py-1.5 text-sm outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+    <Button
+      className={composeTailwindRenderProps(
         className,
+        twJoin([
+          'inset-ring-input text-fg flex w-full min-w-0 cursor-default items-center gap-x-2 rounded-lg px-3.5 py-2 text-start shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)] inset-ring outline-hidden transition duration-200 sm:py-1.5 sm:pr-2 sm:pl-3 sm:text-sm/6 sm:*:text-sm/6 dark:shadow-none',
+          'group-open/select:inset-ring-ring/70 group-open/select:ring-ring/20 group-open/select:ring-3',
+          'forced-colors:group-disabled/select/select:text-[GrayText] group-disabled/select:opacity-50 forced-colors:group-disabled/select:inset-ring-[GrayText]',
+          'focus:inset-ring-ring/70 focus:ring-ring/20 focus:ring-3',
+          'hover:inset-ring-[color-mix(in_oklab,var(--color-input)_50%,var(--color-muted-fg)_25%)]',
+          'group-open/select:invalid:inset-ring-danger/70 group-open/select:invalid:ring-danger/20 group-invalid/select:inset-ring-danger/70 group-invalid/select:ring-danger/20 group-focus/select:group-invalid/select:inset-ring-danger/70 group-focus/select:group-invalid/select:ring-danger/20 group-open/select:invalid:ring-3',
+          'pressed:*:data-[slot=icon]:text-(--btn-icon-active) *:data-[slot=icon]:-mx-0.5 *:data-[slot=icon]:my-0.5 *:data-[slot=icon]:size-5 *:data-[slot=icon]:shrink-0 *:data-[slot=icon]:self-center *:data-[slot=icon]:text-(--btn-icon) hover:*:data-[slot=icon]:text-(--btn-icon-active)/90 focus-visible:*:data-[slot=icon]:text-(--btn-icon-active)/80 sm:*:data-[slot=icon]:my-1 sm:*:data-[slot=icon]:size-4 forced-colors:[--btn-icon:ButtonText] forced-colors:hover:[--btn-icon:ButtonText]',
+          '*:data-[slot=loader]:-mx-0.5 *:data-[slot=loader]:my-0.5 *:data-[slot=loader]:size-5 *:data-[slot=loader]:shrink-0 *:data-[slot=loader]:self-center *:data-[slot=loader]:text-(--btn-icon) sm:*:data-[slot=loader]:my-1 sm:*:data-[slot=loader]:size-4',
+          'forced-colors:group-invalid/select:inset-ring-[Mark] forced-colors:group-focus/select:inset-ring-[Highlight] forced-colors:group-focus/select:group-invalid/select:inset-ring-[Mark]',
+          className,
+        ]),
       )}
-      {...props}
     >
-      <div className="size-4">
-        <BaseSelect.ItemIndicator>
-          <CheckIcon className="size-full" />
-        </BaseSelect.ItemIndicator>
-      </div>
-      <BaseSelect.ItemText className="w-full">{children}</BaseSelect.ItemText>
-    </BaseSelect.Item>
+      {(values) => (
+        <>
+          {props.prefix && <span className="text-muted-fg">{props.prefix}</span>}
+          {typeof children === 'function' ? children(values) : children}
+
+          {!children && (
+            <>
+              <SelectValue
+                data-slot="select-value"
+                className={twJoin([
+                  'data-placeholder:text-muted-fg grid flex-1 grid-cols-[auto_1fr] items-center truncate sm:text-sm/6 [&_[slot=description]]:hidden',
+                  'has-data-[slot=avatar]:gap-x-2 has-data-[slot=icon]:gap-x-2',
+                  '*:data-[slot=icon]:size-4.5 sm:*:data-[slot=icon]:size-4',
+                  '*:data-[slot=avatar]:*:size-5 *:data-[slot=avatar]:size-5 sm:*:data-[slot=avatar]:*:size-4.5 sm:*:data-[slot=avatar]:size-4.5',
+                ])}
+              />
+              <IconChevronsY
+                data-slot="chevron"
+                className="text-muted-fg group-open/select:text-fg -mr-1 shrink-0 group-disabled/select:opacity-50 sm:mr-0"
+              />
+            </>
+          )}
+        </>
+      )}
+    </Button>
   )
 }
 
-const SelectGroupLabel = ({
-  className,
-  ref,
-  ...props
-}: React.ComponentProps<typeof BaseSelect.GroupLabel>) => {
-  return (
-    <BaseSelect.GroupLabel
-      ref={ref}
-      className={cn('text-muted-foreground px-2 py-1.5 text-sm font-medium', className)}
-      {...props}
-    />
-  )
-}
+const SelectSection = DropdownSection
+const SelectSeparator = DropdownSeparator
+const SelectLabel = DropdownLabel
+const SelectDescription = DropdownDescription
+const SelectOption = DropdownItem
 
-const SelectSeparator = ({
-  className,
-  ref,
-  ...props
-}: React.ComponentProps<typeof BaseSelect.Separator>) => {
-  return (
-    <BaseSelect.Separator
-      ref={ref}
-      className={cn('bg-muted -mx-1 my-1 h-px', className)}
-      {...props}
-    />
-  )
-}
-
-Select.Trigger = SelectTrigger
-Select.Content = SelectContent
-Select.Item = SelectItem
-Select.Value = SelectValue
-Select.Group = BaseSelect.Group
-Select.GroupLabel = SelectGroupLabel
+Select.Description = SelectDescription
+Select.Option = SelectOption
+Select.Label = SelectLabel
 Select.Separator = SelectSeparator
+Select.Section = SelectSection
+Select.Trigger = SelectTrigger
+Select.List = SelectList
 
 export { Select }
+export type { SelectProps, SelectTriggerProps }

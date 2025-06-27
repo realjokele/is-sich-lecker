@@ -14,7 +14,7 @@ import { Card } from '~/components/ui/card'
 import { Menu } from '~/components/ui/menu'
 import { $deleteRecipe } from '~/server/recipe/$delete-recipe'
 import { ConfirmationDialog } from '../ConfirmationDialog'
-import { Button } from '../ui/button'
+import { Button, buttonStyles } from '../ui/button'
 // import { AlertDeleteDialog } from '#/components/AlertDeleteDialog/alert-delete-dialog'
 // import { RecipeMenu } from './recipe-menu'
 
@@ -51,6 +51,7 @@ function useDeleteRecipe() {
 
 export default function DashboardRecipe({ recipe }: DashboardRecipeProps) {
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { mutate: deleteRecipe } = useDeleteRecipe()
   const totalTime = (recipe.preparationTime || 0) + (recipe.cookingTime || 0)
 
@@ -108,16 +109,12 @@ export default function DashboardRecipe({ recipe }: DashboardRecipeProps) {
           </Card.Content>
 
           <Card.Footer>
-            <Menu.Root>
-              <Menu.Trigger onClick={(e) => e.stopPropagation()}>
-                <Button variant="ghost" size="icon">
-                  <EllipsisVerticalIcon />
-                </Button>
-                <Menu.Content>
-                  <Menu.Item onClick={() => setConfirmDelete(true)}>Rezept löschen</Menu.Item>
-                </Menu.Content>
-              </Menu.Trigger>
-            </Menu.Root>
+            <Button onPress={() => setIsMenuOpen(true)} intent="plain" size="sq-md">
+              <EllipsisVerticalIcon />
+            </Button>
+            <Menu.Content popover={{ isOpen: isMenuOpen }} className="absolute top-0 right-0">
+              <Menu.Item onAction={() => setConfirmDelete(true)}>Rezept löschen</Menu.Item>
+            </Menu.Content>
           </Card.Footer>
         </Card>
       </Link>

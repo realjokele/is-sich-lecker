@@ -1,5 +1,5 @@
-import { AlertDialog } from '~/components/ui/alert-dialog'
-import { buttonVariants } from '~/components/ui/button'
+import { Modal } from '~/components/ui/modal'
+import { buttonStyles } from '~/components/ui/button'
 
 type ConfirmationDialogProps = {
   open: boolean
@@ -21,24 +21,19 @@ export function ConfirmationDialog({
   onConfirm,
 }: ConfirmationDialogProps) {
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialog.Popup>
-        <AlertDialog.Header>
-          <AlertDialog.Title>{title}</AlertDialog.Title>
-          <AlertDialog.Description>{description}</AlertDialog.Description>
-        </AlertDialog.Header>
-        <AlertDialog.Footer>
-          <AlertDialog.Close className={buttonVariants({ variant: 'outline' })}>
-            {cancelButtonText}
-          </AlertDialog.Close>
-          <AlertDialog.Close
-            className={buttonVariants({ variant: 'destructive' })}
-            onClick={onConfirm}
-          >
-            {confirmButtonText}
-          </AlertDialog.Close>
-        </AlertDialog.Footer>
-      </AlertDialog.Popup>
-    </AlertDialog>
+    <Modal.Content role="alertdialog" isOpen={open} onOpenChange={onOpenChange}>
+      <Modal.Header>
+        <Modal.Title>{title}</Modal.Title>
+        <Modal.Description>{description}</Modal.Description>
+      </Modal.Header>
+      <Modal.Footer className="flex justify-end gap-2">
+        <Modal.Close className={buttonStyles({ intent: 'outline' })}>
+          {cancelButtonText}
+        </Modal.Close>
+        <Modal.Close className={buttonStyles({ intent: 'danger' })} onClick={onConfirm}>
+          {confirmButtonText}
+        </Modal.Close>
+      </Modal.Footer>
+    </Modal.Content>
   )
 }

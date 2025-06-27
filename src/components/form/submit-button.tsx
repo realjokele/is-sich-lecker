@@ -8,7 +8,7 @@ type SubmitButtonProps = ButtonProps & {
 export function SubmitButton({
   isSubmitting,
   type = 'submit',
-  disabled,
+  isDisabled,
   className,
   ...props
 }: SubmitButtonProps) {
@@ -17,7 +17,12 @@ export function SubmitButton({
   return (
     <form.Subscribe selector={(state) => state.isSubmitting}>
       {(isSubmitting) => (
-        <Button type="submit" disabled={isSubmitting || disabled} className={className}>
+        <Button
+          type="submit"
+          isDisabled={isSubmitting || isDisabled}
+          className={className}
+          {...props}
+        >
           Submit
         </Button>
       )}

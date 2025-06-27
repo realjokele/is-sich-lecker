@@ -1,39 +1,70 @@
-import { Switch as BaseSwitch } from '@base-ui-components/react'
-import * as React from 'react'
+import {
+  Switch as SwitchPrimitive,
+  type SwitchProps as SwitchPrimitiveProps,
+} from 'react-aria-components'
 
-import { cn } from '~/utils/cn'
+import { Label } from '@/components/ui/field'
+import { composeTailwindRenderProps } from '@/lib/primitive'
+import { twJoin, twMerge } from 'tailwind-merge'
 
-interface SwitchProps extends React.ComponentProps<typeof BaseSwitch.Root> {
-  label?: string
+interface SwitchProps extends SwitchPrimitiveProps {
+  ref?: React.RefObject<HTMLLabelElement>
 }
-
-const Switch = ({ className, id, label, children, ref, ...props }: SwitchProps) => {
-  const generatedId = React.useId()
-  id = id ?? generatedId
-
+const Switch = ({ children, className, ref, ...props }: SwitchProps) => {
   return (
-    <div className={cn('flex items-center space-x-2', className)}>
-      <BaseSwitch.Root
-        data-slot="switch"
-        id={id}
-        defaultChecked
-        className={cn(
-          'peer data-[checked]:bg-primary data-[unchecked]:bg-input focus-visible:border-ring focus-visible:ring-ring/50 dark:data-[unchecked]:bg-input/80 inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50',
-          className,
-        )}
-        {...props}
-      >
-        <BaseSwitch.Thumb
-          data-slot="switch-thumb"
-          className={cn(
-            'bg-background dark:data-[unchecked]:bg-foreground dark:data-[checked]:bg-primary-foreground pointer-events-none block size-4 rounded-full ring-0 transition-transform data-[checked]:translate-x-[calc(100%-2px)] data-[unchecked]:translate-x-0',
+    <SwitchPrimitive
+      data-slot="switch"
+      ref={ref}
+      {...props}
+      className={composeTailwindRenderProps(
+        className,
+        twJoin(
+          '[--switch-bg-ring:var(--color-primary)]/90 [--switch-bg:var(--color-primary)] dark:[--switch-bg-ring:transparent]',
+          '[--switch-ring:var(--color-primary)]/90 [--switch-shadow:color-mix(in_oklab,var(--color-primary)_30%,var(--color-secondary-fg)_70%))]/20 [--switch:white]',
+          'group relative grid cursor-default grid-cols-[1fr_auto] gap-x-6 gap-y-1 disabled:opacity-50 *:data-[slot=indicator]:col-start-2 *:data-[slot=indicator]:self-start *:data-[slot=label]:col-start-1 *:data-[slot=label]:row-start-1 has-[[slot=description]]:**:data-[slot=label]:font-medium sm:*:data-[slot=indicator]:mt-0.5 *:[[slot=description]]:col-start-1 *:[[slot=description]]:row-start-2',
+        ),
+      )}
+      style={{ WebkitTapHighlightColor: 'transparent' }}
+    >
+      {(values) => (
+        <>
+          <span
+            data-slot="indicator"
+            className={twMerge(
+              'relative isolate inline-flex h-6 w-10 cursor-default rounded-full p-[3px] sm:h-5 sm:w-8',
+              'transition duration-200 ease-in-out',
+              'inset-ring-fg/5 bg-secondary dark:inset-ring-fg/15 inset-ring',
+              'forced-colors:outline forced-colors:[--switch-bg:Highlight]',
+              values.isHovered && 'inset-ring-fg/15 dark:inset-ring-fg/25',
+              values.isFocusVisible &&
+                'inset-ring-ring/70 selected:inset-ring-ring/30 bg-ring/20 ring-ring/20 dark:inset-ring-ring/70 ring-2',
+              values.isSelected &&
+                'bg-(--switch-bg) inset-ring-(--switch-shadow) dark:inset-ring-(--switch-bg-ring)',
+              values.isDisabled &&
+                'dark:group-disabled:bg-fg/15 dark:group-disabled:group-selected:inset-ring-fg/15 dark:group-disabled:group-selected:bg-(--switch-bg)',
+            )}
+          >
+            <span
+              aria-hidden="true"
+              className={twJoin(
+                'ring-fg/5 pointer-events-none relative inline-block size-4.5 translate-x-0 rounded-full border border-transparent bg-white shadow-sm ring transition duration-200 ease-in-out sm:size-3.5',
+                values.isSelected &&
+                  'group-disabled:ring-secondary-fg/5 translate-x-4 bg-(--switch) shadow-(--switch-shadow) ring-(--switch-ring) group-disabled:shadow-sm sm:translate-x-3',
+              )}
+            />
+          </span>
+          {typeof children === 'function' ? (
+            children(values)
+          ) : typeof children === 'string' ? (
+            <Label>{children}</Label>
+          ) : (
+            children
           )}
-        />
-      </BaseSwitch.Root>
-
-      <label htmlFor={id}>{label}</label>
-    </div>
+        </>
+      )}
+    </SwitchPrimitive>
   )
 }
 
+export type { SwitchProps }
 export { Switch }

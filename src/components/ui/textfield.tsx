@@ -1,47 +1,97 @@
-import { Field } from '@base-ui-components/react/field'
-import { EyeIcon, EyeOffIcon } from 'lucide-react'
-import React from 'react'
+'use client'
 
-import { Input } from '~/components/ui/input'
-import { cn } from '~/utils/cn'
-import { Button } from './button'
+import { useState } from 'react'
 
-export interface TextFieldProps extends React.ComponentProps<typeof Input> {
-  label?: string
-  errorMessage?: string
-  invalid?: boolean
+import type { FieldProps } from '@/components/ui/field'
+import { Description, FieldError, FieldGroup, Input, Label } from '@/components/ui/field'
+import { Loader } from '@/components/ui/loader'
+import { composeTailwindRenderProps } from '@/lib/primitive'
+import { IconEye, IconEyeClosed } from '@intentui/icons'
+import { TextField as TextFieldPrimitive } from 'react-aria-components'
+import type { InputProps, TextFieldProps as TextFieldPrimitiveProps } from 'react-aria-components'
+
+type InputType = Exclude<InputProps['type'], 'password'>
+
+interface BaseTextFieldProps extends TextFieldPrimitiveProps, FieldProps {
+  prefix?: React.ReactNode | string
+  suffix?: React.ReactNode | string
+  isPending?: boolean
 }
 
-export function TextField({ type, label, errorMessage, invalid, ...props }: TextFieldProps) {
-  const [showPassword, setShowPassword] = React.useState(false)
+type TextFieldProps =
+  | (BaseTextFieldProps & { isRevealable: true; type: 'password' })
+  | (BaseTextFieldProps & { isRevealable?: never; type?: InputType })
 
-  function togglePasswordVisibility() {
-    setShowPassword(!showPassword)
+const TextField = ({
+  placeholder,
+  label,
+  description,
+  errorMessage,
+  prefix,
+  suffix,
+  isPending,
+  className,
+  isRevealable,
+  type,
+  ...props
+}: TextFieldProps) => {
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+  const inputType = isRevealable ? (isPasswordVisible ? 'text' : 'password') : type
+  const handleTogglePasswordVisibility = () => {
+    setIsPasswordVisible((prev) => !prev)
   }
-
   return (
-    <Field.Root className={cn('group flex w-full flex-col gap-1')} invalid={invalid}>
-      <Field.Label>{label}</Field.Label>
-      <div className="relative">
-        <Input
-          className={cn(type === 'password' && 'pe-9')}
-          {...props}
-          type={type === 'password' && showPassword ? 'text' : type}
-          aria-invalid={invalid}
-        />
-        {type === 'password' && (
-          <Button
-            type="button"
-            onClick={togglePasswordVisibility}
-            variant="icon"
-            size="icon"
-            className="text-muted-foreground hover:text-primary focus-visible:border-ring focus-visible:ring-ring/50 absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-md transition-[color,box-shadow] outline-none focus:z-10 focus-visible:ring-[3px] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+    <TextFieldPrimitive
+      type={inputType}
+      {...props}
+      className={composeTailwindRenderProps(
+        className,
+        'group flex flex-col gap-y-1 *:data-[slot=label]:font-medium',
+      )}
+    >
+      {!props.children ? (
+        <>
+          {label && <Label>{label}</Label>}
+          <FieldGroup
+            isDisabled={props.isDisabled}
+            isInvalid={!!errorMessage}
+            data-loading={isPending ? 'true' : undefined}
           >
-            {showPassword ? <EyeIcon className="h-5 w-5" /> : <EyeOffIcon className="h-5 w-5" />}
-          </Button>
-        )}
-      </div>
-      {errorMessage && <div className="text text-destructive">{errorMessage}</div>}
-    </Field.Root>
+            {prefix && typeof prefix === 'string' ? (
+              <span className="text-muted-fg pl-2">{prefix}</span>
+            ) : (
+              prefix
+            )}
+            <Input placeholder={placeholder} />
+            {isRevealable ? (
+              <button
+                type="button"
+                tabIndex={-1}
+                aria-label="Toggle password visibility"
+                onClick={handleTogglePasswordVisibility}
+                className="*:data-[slot=icon]:text-muted-fg focus-visible:*:data-[slot=icon]:text-primary relative mr-0.5 grid shrink-0 place-content-center rounded-sm border-transparent outline-hidden"
+              >
+                {isPasswordVisible ? <IconEyeClosed /> : <IconEye />}
+              </button>
+            ) : isPending ? (
+              <Loader variant="spin" />
+            ) : suffix ? (
+              typeof suffix === 'string' ? (
+                <span className="text-muted-fg mr-2">{suffix}</span>
+              ) : (
+                suffix
+              )
+            ) : null}
+          </FieldGroup>
+          {description && <Description>{description}</Description>}
+          <FieldError>{errorMessage}</FieldError>
+        </>
+      ) : (
+        props.children
+      )}
+    </TextFieldPrimitive>
   )
 }
+
+export type { TextFieldProps }
+export { TextField }
