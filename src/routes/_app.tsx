@@ -1,5 +1,5 @@
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router'
-import { Toaster } from '~/components/ui/sonner'
+import { Toaster } from '~/components/ui/toast'
 
 export const Route = createFileRoute('/_app')({
   component: AppLayout,
