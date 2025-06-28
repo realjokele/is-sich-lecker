@@ -1,12 +1,13 @@
+import React from 'react'
 import { queryOptions, useMutation, useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { PlusIcon } from 'lucide-react'
-import React from 'react'
-import { toast } from 'sonner'
-import { DashboardRecipes } from '~/components/DashboardRecipes'
+
+import { DashboardRecipes } from '~/features/dashboard/components/dashboard-recipes'
+import { toast } from '~/components/ui/toast'
 import { Button } from '~/components/ui/button'
-import { $createRecipe } from '~/server/recipe/$create-recipe'
 import { $getUserRecipes } from '~/server/recipe/$get-user-recipes'
+import { $createRecipe } from '~/server/recipe/$create-recipe'
 
 export const Route = createFileRoute('/_app/dashboard')({
   component: Dashboard,
@@ -23,7 +24,7 @@ const userRecipesQueryOptions = (userId: string) =>
     queryFn: () => $getUserRecipes(),
   })
 
-function useCreateRecipe() {
+export function useCreateRecipe() {
   const navigate = useNavigate()
 
   return useMutation({

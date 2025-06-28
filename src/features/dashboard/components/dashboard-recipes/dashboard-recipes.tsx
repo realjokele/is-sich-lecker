@@ -1,6 +1,7 @@
 import type { Recipe } from '@prisma/client'
-import DashboardRecipe from '~/components/DashboardRecipe/DashboardRecipe'
+
 import { cn } from '~/utils/cn'
+import DashboardRecipe from '../dashboard-recipe/dashboard-recipe'
 
 type DashboardRecipesProps = {
   recipes: Recipe[] | null

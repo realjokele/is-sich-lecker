@@ -1,4 +1,5 @@
 import { Toaster as ToasterPrimitive, type ToasterProps } from 'sonner'
+export { toast } from 'sonner'
 
 const Toaster = ({ ...props }: ToasterProps) => {
   return (
