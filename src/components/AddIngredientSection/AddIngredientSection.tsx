@@ -6,10 +6,23 @@ import { Plus } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 import { TextField } from '~/components/ui/textfield'
 
-export function AddIngredientSection() {
+type AddIngredientSectionProps = {
+  onAddSection?: (sectionName: string) => void
+}
+
+export function AddIngredientSection({ onAddSection }: AddIngredientSectionProps) {
   // const fetcher = useFetcher()
   const [newSectionName, setNewSectionName] = React.useState('')
   const [isAddingSection, setIsAddingSection] = React.useState(false)
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (newSectionName.trim() && onAddSection) {
+      onAddSection(newSectionName.trim())
+      setNewSectionName('')
+      setIsAddingSection(false)
+    }
+  }
 
   // React.useEffect(() => {
   //   if (fetcher.state === 'submitting') {
@@ -21,7 +34,7 @@ export function AddIngredientSection() {
   return (
     <>
       {isAddingSection ? (
-        <form method="post" className="space-y-2">
+        <form onSubmit={handleSubmit} className="space-y-2">
           <input type="hidden" name="intent" value="add-section" />
           <TextField
             className="w-full"

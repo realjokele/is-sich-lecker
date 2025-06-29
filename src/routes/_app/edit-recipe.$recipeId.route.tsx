@@ -25,18 +25,42 @@ export default function EditRecipe() {
   const { mutate: saveRecipe } = useSaveRecipe()
   const [confirmationOpen, setConfirmationOpen] = React.useState(false)
 
-  const title = useRecipeStore((state) => state.title ?? recipe?.title)
+  // Get store state and actions
+  const storeRecipe = useRecipeStore((state) => state.recipe)
   const hasChanges = useRecipeStore((state) => state.hasChanges)
   const setTitle = useRecipeStore((state) => state.setTitle)
+  const initializeRecipe = useRecipeStore((state) => state.initializeRecipe)
   const resetStore = useRecipeStore((state) => state.reset)
 
-  // Reset store when recipe changes
+  // Use store recipe if available, otherwise fall back to loader recipe
+  const currentRecipe = storeRecipe || recipe
+  const title = currentRecipe?.title ?? ''
+
+  // Initialize store when recipe changes
   React.useEffect(() => {
-    resetStore()
-  }, [recipeId, resetStore])
+    if (recipe) {
+      // Transform the recipe to include relations (you'll need to update $getRecipe to include these)
+      const recipeWithRelations = {
+        ...recipe,
+        ingredientSections: [],
+        steps: [],
+      }
+      initializeRecipe(recipeWithRelations)
+    }
+
+    return () => {
+      resetStore()
+    }
+  }, [recipeId, recipe, initializeRecipe, resetStore])
 
   const handleSave = () => {
-    saveRecipe({ recipeId, title: title ?? '' })
+    if (currentRecipe) {
+      saveRecipe({
+        recipeId,
+        title: currentRecipe.title,
+        // Add other fields as needed when you expand the save functionality
+      })
+    }
   }
 
   const handleAbort = () => {
@@ -55,7 +79,7 @@ export default function EditRecipe() {
             <div className="flex gap-2">
               <EditableText
                 fieldName="recipeTitle"
-                value={title ?? ''}
+                value={title}
                 className="text-overlay-fg font-bold hover:cursor-pointer sm:text-3xl"
                 onChangeValue={setTitle}
                 placeholder="Rezeptname"
