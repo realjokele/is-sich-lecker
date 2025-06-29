@@ -8,24 +8,15 @@ import {
 
 export function IngredientSection() {
   const ingredientSections = useIngredientSections()
-  const { addIngredientSection, removeIngredientSection } = useIngredientSectionActions()
-  const { addIngredient, removeIngredient } = useIngredientActions()
+  const { removeIngredientSection } = useIngredientSectionActions()
+  // const { addIngredient, removeIngredient } = useIngredientActions()
 
-  const handleAddSection = (sectionName?: string) => {
-    addIngredientSection({
-      name: sectionName || 'Neuer Abschnitt',
-      description: null,
-      order: ingredientSections.length,
-      type: 'CUSTOM',
-    })
-  }
-
-  const handleAddIngredient = (sectionId: string) => {
-    addIngredient(sectionId, {
-      ingredientId: 'temp-id', // You'll need to handle ingredient creation
-      order: 0,
-    })
-  }
+  // const handleAddIngredient = (sectionId: string) => {
+  //   addIngredient(sectionId, {
+  //     ingredientId: `temp-id-${crypto.randomUUID()}`, // You'll need to handle ingredient creation
+  //     order: 0,
+  //   })
+  // }
 
   return (
     <div className="w-[600px]">
@@ -39,25 +30,20 @@ export function IngredientSection() {
         {ingredientSections.length === 0 ? (
           <div className="text-muted-fg py-8 text-center">
             <p>Noch keine Zutaten hinzugefügt</p>
-            <button
-              onClick={() => handleAddSection()}
-              className="text-primary mt-2 hover:underline"
-            >
-              Ersten Abschnitt hinzufügen
-            </button>
           </div>
         ) : (
           ingredientSections.map((section) => (
             <IngredientSectionItem
               key={section.id}
               section={section}
-              onAddIngredient={() => handleAddIngredient(section.id)}
+              // onAddIngredient={() => handleAddIngredient(section.id)}
               onRemoveSection={() => removeIngredientSection(section.id)}
+              onAddIngredient={() => {}}
             />
           ))
         )}
 
-        <AddIngredientSection onAddSection={handleAddSection} />
+        <AddIngredientSection />
       </div>
     </div>
   )
@@ -103,17 +89,17 @@ function IngredientSectionItem({
 }
 
 function IngredientItem({ ingredient }: { ingredient: any }) {
-  const { removeIngredient } = useIngredientActions()
+  // const { removeIngredient } = useIngredientActions()
 
   return (
     <div className="flex items-center gap-2 rounded bg-gray-50 p-2">
       <span className="flex-1">Zutat {ingredient.id}</span>
-      <button
+      {/* <button
         onClick={() => removeIngredient(ingredient.id)}
         className="text-red-500 hover:text-red-700"
       >
         ×
-      </button>
+      </button> */}
     </div>
   )
 }

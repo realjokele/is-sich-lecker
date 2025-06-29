@@ -2,63 +2,80 @@ import * as React from 'react'
 
 import { Plus } from 'lucide-react'
 
-// import { useFetcher } from 'react-router'
 import { Button } from '~/components/ui/button'
 import { TextField } from '~/components/ui/textfield'
+import { useIngredientSectionActions } from '~/features/recipe-editor/hooks/use-recipe-selectors'
 
-type AddIngredientSectionProps = {
-  onAddSection?: (sectionName: string) => void
-}
-
-export function AddIngredientSection({ onAddSection }: AddIngredientSectionProps) {
-  // const fetcher = useFetcher()
+export function AddIngredientSection() {
+  const { addIngredientSection } = useIngredientSectionActions()
   const [newSectionName, setNewSectionName] = React.useState('')
   const [isAddingSection, setIsAddingSection] = React.useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (newSectionName.trim() && onAddSection) {
-      onAddSection(newSectionName.trim())
-      setNewSectionName('')
+  const handleAddSection = React.useCallback(
+    (sectionName: string) => {
+      addIngredientSection({
+        id: `temp-id-${crypto.randomUUID()}`,
+        name: sectionName,
+        type: 'CUSTOM',
+      })
       setIsAddingSection(false)
-    }
+      setNewSectionName('')
+    },
+    [addIngredientSection],
+  )
+
+  useEnterKeyHandler(isAddingSection, newSectionName, handleAddSection)
+
+  if (isAddingSection) {
+    return (
+      <div className="space-y-2">
+        <input type="hidden" name="intent" value="add-section" />
+        <TextField
+          className="w-full"
+          aria-label="Abschnittsname"
+          name="sectionName"
+          value={newSectionName}
+          onChange={(e) => setNewSectionName(e.target.value)}
+          autoFocus
+        />
+        <div className="flex gap-2">
+          <Button
+            type="submit"
+            onClick={() => handleAddSection(newSectionName)}
+            disabled={newSectionName.length === 0}
+          >
+            Hinzufügen
+          </Button>
+          <Button type="button" variant="outline" onClick={() => setIsAddingSection(false)}>
+            Abbrechen
+          </Button>
+        </div>
+      </div>
+    )
   }
 
-  // React.useEffect(() => {
-  //   if (fetcher.state === 'submitting') {
-  //     setIsAddingSection(false)
-  //     setNewSectionName('')
-  //   }
-  // }, [fetcher.state])
-
   return (
-    <>
-      {isAddingSection ? (
-        <form onSubmit={handleSubmit} className="space-y-2">
-          <input type="hidden" name="intent" value="add-section" />
-          <TextField
-            className="w-full"
-            aria-label="Abschnittsname"
-            name="sectionName"
-            value={newSectionName}
-            onChange={(e) => setNewSectionName(e.target.value)}
-            autoFocus
-          />
-          <div className="flex gap-2">
-            <Button type="submit" disabled={newSectionName.length === 0}>
-              Hinzufügen
-            </Button>
-            <Button type="button" variant="outline" onClick={() => setIsAddingSection(false)}>
-              Abbrechen
-            </Button>
-          </div>
-        </form>
-      ) : (
-        <Button variant="outline" className="gap-2" onClick={() => setIsAddingSection(true)}>
-          <Plus className="h-4 w-4" />
-          Abschnitt hinzufügen
-        </Button>
-      )}
-    </>
+    <Button variant="outline" className="gap-2" onClick={() => setIsAddingSection(true)}>
+      <Plus className="h-4 w-4" />
+      Abschnitt hinzufügen
+    </Button>
   )
+}
+
+function useEnterKeyHandler(
+  isActive: boolean,
+  currentValue: string,
+  onEnter: (value: string) => void,
+) {
+  React.useEffect(() => {
+    if (!isActive) return
+
+    const eventHandler = (e: KeyboardEvent) => {
+      if (e.code !== 'Enter') return
+      onEnter(currentValue)
+    }
+
+    window.addEventListener('keyup', eventHandler)
+    return () => window.removeEventListener('keyup', eventHandler)
+  }, [isActive, currentValue, onEnter])
 }

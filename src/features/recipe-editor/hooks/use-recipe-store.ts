@@ -1,9 +1,12 @@
 import { create } from 'zustand'
+import { devtools } from 'zustand/middleware'
 import { Recipe, IngredientSection, RecipeIngredient, RecipeStep } from '@prisma/client'
+
+type IngredientSection2 = Pick<IngredientSection, 'name' | 'id' | 'type'>
 
 // Extended types to include relations
 type RecipeWithRelations = Recipe & {
-  ingredientSections: (IngredientSection & {
+  ingredientSections: (IngredientSection2 & {
     ingredients: RecipeIngredient[]
   })[]
   steps: RecipeStep[]
@@ -33,11 +36,9 @@ type RecipeStore = {
   // setCookingTime: (time: number | null) => void
 
   // // Ingredient sections
-  // addIngredientSection: (
-  //   section: Omit<IngredientSection, 'id' | 'createdAt' | 'updatedAt' | 'recipeId'>,
-  // ) => void
+  addIngredientSection: (section: IngredientSection2) => void
   // updateIngredientSection: (sectionId: string, updates: Partial<IngredientSection>) => void
-  // removeIngredientSection: (sectionId: string) => void
+  removeIngredientSection: (sectionId: string) => void
   // reorderIngredientSections: (sectionIds: string[]) => void
 
   // // Ingredients within sections
@@ -63,28 +64,61 @@ type RecipeStore = {
   // getChangedFields: () => Partial<RecipeWithRelations>
 }
 
-export const useRecipeStore = create<RecipeStore>((set, get) => ({
-  recipe: null,
-  originalRecipe: null,
-  hasChanges: false,
-  isSaving: false,
-  initializeRecipe: (receipe) =>
-    set(() => ({
-      receipe,
-      originalRecipe: receipe,
-      hasChanges: false,
-      isSaving: false,
-    })),
-  setTitle: (title) =>
-    set((state) => ({
-      recipe: state.recipe ? { ...state.recipe, title } : null,
-      hasChanges: true,
-    })),
-  reset: () =>
-    set({
-      recipe: null,
-      originalRecipe: null,
-      hasChanges: false,
-      isSaving: false,
-    }),
-}))
+export const useRecipeStore = create<RecipeStore>()(
+  devtools((set, get) => ({
+    recipe: null,
+    originalRecipe: null,
+    hasChanges: false,
+    isSaving: false,
+    initializeRecipe: (recipe) =>
+      set(() => ({
+        recipe,
+        originalRecipe: recipe,
+        hasChanges: false,
+        isSaving: false,
+      })),
+    setTitle: (title) =>
+      set((state) => ({
+        recipe: state.recipe ? { ...state.recipe, title } : null,
+        hasChanges: true,
+      })),
+    reset: () =>
+      set({
+        recipe: null,
+        originalRecipe: null,
+        hasChanges: false,
+        isSaving: false,
+      }),
+    addIngredientSection: (section) => {
+      return set((state) => {
+        if (!state.recipe) return state
+
+        const newSection = {
+          ...section,
+          ingredients: [],
+        }
+
+        return {
+          recipe: {
+            ...state.recipe,
+            ingredientSections: [...state.recipe.ingredientSections, newSection],
+          },
+        }
+      })
+    },
+    removeIngredientSection(sectionId) {
+      return set((state) => {
+        if (!state.recipe) return state
+
+        return {
+          recipe: {
+            ...state.recipe,
+            ingredientSections: state.recipe.ingredientSections.filter(
+              (section) => section.id !== sectionId,
+            ),
+          },
+        }
+      })
+    },
+  })),
+)

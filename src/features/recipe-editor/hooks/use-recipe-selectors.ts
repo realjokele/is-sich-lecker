@@ -71,62 +71,62 @@ export const useTotalTime = () => {
 // Action selectors (for performance, only select the actions you need)
 export const useRecipeActions = () => {
   const setTitle = useRecipeStore((state) => state.setTitle)
-  const setDescription = useRecipeStore((state) => state.setDescription)
-  const setServings = useRecipeStore((state) => state.setServings)
-  const setLevel = useRecipeStore((state) => state.setLevel)
-  const setPreparationTime = useRecipeStore((state) => state.setPreparationTime)
-  const setCookingTime = useRecipeStore((state) => state.setCookingTime)
+  // const setDescription = useRecipeStore((state) => state.setDescription)
+  // const setServings = useRecipeStore((state) => state.setServings)
+  // const setLevel = useRecipeStore((state) => state.setLevel)
+  // const setPreparationTime = useRecipeStore((state) => state.setPreparationTime)
+  // const setCookingTime = useRecipeStore((state) => state.setCookingTime)
 
   return {
     setTitle,
-    setDescription,
-    setServings,
-    setLevel,
-    setPreparationTime,
-    setCookingTime,
+    // setDescription,
+    // setServings,
+    // setLevel,
+    // setPreparationTime,
+    // setCookingTime,
   }
 }
 
 export const useIngredientSectionActions = () => {
   const addIngredientSection = useRecipeStore((state) => state.addIngredientSection)
-  const updateIngredientSection = useRecipeStore((state) => state.updateIngredientSection)
+  // const updateIngredientSection = useRecipeStore((state) => state.updateIngredientSection)
   const removeIngredientSection = useRecipeStore((state) => state.removeIngredientSection)
-  const reorderIngredientSections = useRecipeStore((state) => state.reorderIngredientSections)
+  // const reorderIngredientSections = useRecipeStore((state) => state.reorderIngredientSections)
 
   return {
     addIngredientSection,
-    updateIngredientSection,
+    // updateIngredientSection,
     removeIngredientSection,
-    reorderIngredientSections,
+    // reorderIngredientSections,
   }
 }
 
 export const useIngredientActions = () => {
-  const addIngredient = useRecipeStore((state) => state.addIngredient)
-  const updateIngredient = useRecipeStore((state) => state.updateIngredient)
-  const removeIngredient = useRecipeStore((state) => state.removeIngredient)
-  const moveIngredient = useRecipeStore((state) => state.moveIngredient)
-  const reorderIngredients = useRecipeStore((state) => state.reorderIngredients)
+  // const addIngredient = useRecipeStore((state) => state.addIngredient)
+  // const updateIngredient = useRecipeStore((state) => state.updateIngredient)
+  // const removeIngredient = useRecipeStore((state) => state.removeIngredient)
+  // const moveIngredient = useRecipeStore((state) => state.moveIngredient)
+  // const reorderIngredients = useRecipeStore((state) => state.reorderIngredients)
 
   return {
-    addIngredient,
-    updateIngredient,
-    removeIngredient,
-    moveIngredient,
-    reorderIngredients,
+    // addIngredient,
+    // updateIngredient,
+    // removeIngredient,
+    // moveIngredient,
+    // reorderIngredients,
   }
 }
 
 export const useStepActions = () => {
-  const addStep = useRecipeStore((state) => state.addStep)
-  const updateStep = useRecipeStore((state) => state.updateStep)
-  const removeStep = useRecipeStore((state) => state.removeStep)
-  const reorderSteps = useRecipeStore((state) => state.reorderSteps)
+  // const addStep = useRecipeStore((state) => state.addStep)
+  // const updateStep = useRecipeStore((state) => state.updateStep)
+  // const removeStep = useRecipeStore((state) => state.removeStep)
+  // const reorderSteps = useRecipeStore((state) => state.reorderSteps)
 
   return {
-    addStep,
-    updateStep,
-    removeStep,
-    reorderSteps,
+    // addStep,
+    // updateStep,
+    // removeStep,
+    // reorderSteps,
   }
 }
